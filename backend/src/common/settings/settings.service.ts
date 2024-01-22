@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {ConfigService} from "@nestjs/config";
-import {ISettings} from "../../types/config";
+import {ISettings} from "./settings.types";
 import {keysOf} from "backend-batteries";
 
 @Injectable()

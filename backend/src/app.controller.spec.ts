@@ -1,9 +1,9 @@
 import {Test, TestingModule} from "@nestjs/testing";
 import {AppController} from "./app.controller";
 import {AppService} from "./app.service";
-import {Settings} from "./providers/settings/settings.service";
 import {ConfigModule} from "@nestjs/config";
-import {configSchema} from "./types/config";
+import {configSchema} from "./common/settings/settings.types";
+import {Settings} from "./common/settings/settings.service";
 
 describe("AppController", () => {
     let appController: AppController;
