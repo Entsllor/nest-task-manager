@@ -5,7 +5,7 @@ import {createZodDto} from "nestjs-zod";
 export const CreateTaskSchema = z.object({
     title: z.string(),
     description: z.string().optional(),
-    deadline: z.coerce.date().min(new Date()).optional(),
+    deadline: z.dateString().future().optional(),
     isHighPriority: z.boolean().optional(),
 });
 

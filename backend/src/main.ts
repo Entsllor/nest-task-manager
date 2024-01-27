@@ -3,6 +3,7 @@ import {AppModule} from "./app.module";
 import {Settings} from "./common/settings/settings.service";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import {AppExceptionsFilter} from "./helpers/exceptions/app-exceptions.filter";
+import {ZodValidationExceptionFilter} from "./helpers/exceptions/zod-exception.filter";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -15,6 +16,7 @@ async function bootstrap() {
     const port = settings.PORT;
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     app.useGlobalFilters(new AppExceptionsFilter());
+    app.useGlobalFilters(new ZodValidationExceptionFilter());
     SwaggerModule.setup(settings.SWAGGER_URL_PREFIX, app, document);
     await app.listen(port);
 }
