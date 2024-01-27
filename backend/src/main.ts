@@ -2,6 +2,7 @@ import {NestFactory} from "@nestjs/core";
 import {AppModule} from "./app.module";
 import {Settings} from "./common/settings/settings.service";
 import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
+import {AppExceptionsFilter} from "./helpers/exceptions/app-exceptions.filter";
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
@@ -13,6 +14,7 @@ async function bootstrap() {
         .build();
     const port = settings.PORT;
     const document = SwaggerModule.createDocument(app, swaggerConfig);
+    app.useGlobalFilters(new AppExceptionsFilter());
     SwaggerModule.setup(settings.SWAGGER_URL_PREFIX, app, document);
     await app.listen(port);
 }
