@@ -6,7 +6,8 @@ import {uuid4} from "backend-batteries";
 import {TasksService} from "./tasks.service";
 import {faker} from "@faker-js/faker";
 import {TaskNotFound} from "../task-manager.exceptions";
-import {expectError} from "../../helpers/tests-utils/expectError";
+import {expectError} from "../../helpers/tests-utils/expect-error";
+import {expectSchema} from "../../helpers/tests-utils/expect-schema";
 
 describe("TasksController", () => {
     let controller: TasksController;
@@ -42,7 +43,7 @@ describe("TasksController", () => {
             const task = await createTask();
             jest.spyOn(service, "getOne").mockImplementation(async () => Promise.resolve(task));
             const gottenTask = await controller.getOne(task.id);
-            expect(gottenTask).toEqual(TaskSchema.parse(task));
+            expectSchema(TaskSchema, gottenTask);
         });
 
         it("should raise if not found", async () => {
@@ -61,6 +62,7 @@ describe("TasksController", () => {
             jest.spyOn(service, "getMany").mockImplementation(async () => Promise.resolve([task]));
             const tasks = await controller.getMany();
             expect(tasks).toEqual([task]);
+            expectSchema(TaskSchema.array(), tasks);
         });
     });
 
@@ -68,7 +70,7 @@ describe("TasksController", () => {
         it("should update one", async () => {
             const task = await createTask();
             jest.spyOn(service, "update").mockImplementation(async () => Promise.resolve(task));
-            expect(await controller.update(task.id, {})).toEqual(TaskSchema.parse(task));
+            expectSchema(TaskSchema, await controller.update(task.id, {}));
         });
 
         it("should raise error if not found", async () => {
