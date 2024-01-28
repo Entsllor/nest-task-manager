@@ -4,6 +4,8 @@ import {generateMock} from "@anatine/zod-mock";
 import {CreateTaskSchema} from "./tasks.schemas";
 import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {Task} from "./tasks.model";
 
 describe("TasksService", () => {
     let service: TasksService;
@@ -15,6 +17,7 @@ describe("TasksService", () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [TasksService],
+            imports: [TypeOrmModule.forFeature([Task])]
         }).compile();
 
         service = module.get<TasksService>(TasksService);

@@ -8,19 +8,22 @@ import {faker} from "@faker-js/faker";
 import {TaskNotFound} from "../task-manager.exceptions";
 import {expectError} from "../../helpers/tests-utils/expect-error";
 import {expectSchema} from "../../helpers/tests-utils/expect-schema";
+import {TypeOrmModule} from "@nestjs/typeorm";
+import {Task} from "./tasks.model";
 
 describe("TasksController", () => {
     let controller: TasksController;
     let service: TasksService;
 
-    function createTask() {
-        return Promise.resolve(generateMock(TaskSchema));
+    function createTask(): Promise<Task> {
+        return Promise.resolve(generateMock(TaskSchema)) as any;
     }
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [TasksController],
             providers: [TasksService],
+            imports: [TypeOrmModule.forFeature([Task])],
         }).compile();
 
         controller = module.get<TasksController>(TasksController);
