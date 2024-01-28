@@ -1,10 +1,14 @@
 import {Module} from "@nestjs/common";
 import {Settings} from "./settings.service";
 import {ConfigModule} from "@nestjs/config";
-import {configSchema} from "./settings.types";
+import {AppMode, configSchema} from "./settings.types";
+
 
 @Module({
-    imports: [ConfigModule.forRoot({validate: configSchema.parse})],
+    imports: [ConfigModule.forRoot({
+        validate: configSchema.parse,
+        envFilePath: process.env.NODE_ENV === AppMode.test ? ".env.test" : undefined,
+    })],
     providers: [Settings],
 })
 export class SettingsModule {

@@ -1,0 +1,26 @@
+version: '3'
+services:
+  # database
+  db:
+    image: "postgres:16.1-alpine"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGPORT: ${DB_PORT}
+    volumes:
+      - db.volume:/var/lib/postgresql/data
+    # dependent modules should start only when db is ready to accept connections
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
+      interval: 1s
+      timeout: 1s
+      retries: 5
+    networks:
+      - app.network
+
+volumes:
+  db.volume:
+networks:
+  app.network:
+    driver: bridge

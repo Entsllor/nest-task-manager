@@ -6,6 +6,7 @@ import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Task} from "./tasks.model";
+import {CommonModule} from "../../common/common.module";
 
 describe("TasksService", () => {
     let service: TasksService;
@@ -17,7 +18,7 @@ describe("TasksService", () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             providers: [TasksService],
-            imports: [TypeOrmModule.forFeature([Task])]
+            imports: [CommonModule, TypeOrmModule.forFeature([Task])],
         }).compile();
 
         service = module.get<TasksService>(TasksService);

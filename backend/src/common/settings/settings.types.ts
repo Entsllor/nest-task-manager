@@ -14,7 +14,7 @@ export const configSchema = zod.object({
     APP_NAME: zod.string().default("nestjs app"),
     SWAGGER_URL_PREFIX: zod.string().regex(/^[\/0-9a-zA-Z\-_]+$/).default("swagger"),
 
-    DB_TYPE: zod.string(),
+    DB_TYPE: zod.string().default('postgres'),
     DB_NAME: zod.string(),
     DB_HOST: zod.string(),
     DB_PORT: zod.coerce.number(),

@@ -10,6 +10,7 @@ import {expectError} from "../../helpers/tests-utils/expect-error";
 import {expectSchema} from "../../helpers/tests-utils/expect-schema";
 import {TypeOrmModule} from "@nestjs/typeorm";
 import {Task} from "./tasks.model";
+import {CommonModule} from "../../common/common.module";
 
 describe("TasksController", () => {
     let controller: TasksController;
@@ -23,7 +24,7 @@ describe("TasksController", () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [TasksController],
             providers: [TasksService],
-            imports: [TypeOrmModule.forFeature([Task])],
+            imports: [CommonModule, TypeOrmModule.forFeature([Task])],
         }).compile();
 
         controller = module.get<TasksController>(TasksController);
