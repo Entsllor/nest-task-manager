@@ -1,40 +1,32 @@
 import {Injectable} from "@nestjs/common";
-import {UUID, uuid4, valuesOf} from "backend-batteries";
-import {CreateTaskDto, TaskDto, UpdateTaskDto} from "./tasks.schemas";
+import {UUID} from "backend-batteries";
+import {CreateTaskDto, UpdateTaskDto} from "./tasks.schemas";
+import {InjectRepository} from "@nestjs/typeorm";
+import {Task} from "./tasks.model";
+import {Repository} from "typeorm";
 
 @Injectable()
 export class TasksService {
-    private db: Record<UUID, TaskDto> = {};
-
-    create(createTaskDto: CreateTaskDto): Promise<TaskDto> {
-        const task: TaskDto = {...createTaskDto, id: uuid4()};
-        this.db[task.id] = task;
-        return Promise.resolve(task);
+    constructor(@InjectRepository(Task) private taskRepo: Repository<Task>) {
     }
 
-    getOne(taskId: UUID): Promise<TaskDto | undefined> {
-        return Promise.resolve(this.db[taskId]);
+    create(createTaskDto: CreateTaskDto): Task {
+        return this.taskRepo.create(createTaskDto);
     }
 
-    getMany(): Promise<TaskDto[]> {
-        return Promise.resolve(valuesOf(this.db));
+    getOne(taskId: UUID): Promise<Task | null> {
+        return this.taskRepo.findOneBy({id: taskId});
     }
 
-    update(taskId: UUID, data: UpdateTaskDto): Promise<TaskDto | undefined> {
-        let task = this.db[taskId];
-        if (!task) {
-            return Promise.resolve(undefined);
-        }
-        task = {...task, ...data};
-        delete this.db[taskId];
-        return Promise.resolve(task);
+    getMany(): Promise<Task[]> {
+        return this.taskRepo.findBy({});
     }
 
-    delete(taskId: UUID): Promise<boolean> {
-        if (!this.db[taskId]) {
-            return Promise.resolve(false);
-        }
-        delete this.db[taskId];
-        return Promise.resolve(true);
+    async update(taskId: UUID, data: UpdateTaskDto): Promise<Task | undefined> {
+        return this.taskRepo.save({id: taskId, ...data});
+    }
+
+    async delete(taskId: UUID): Promise<boolean> {
+        return this.taskRepo.delete({id: taskId}).then(value => (value.affected ?? 0) > 0);
     }
 }
