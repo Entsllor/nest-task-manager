@@ -9,7 +9,7 @@ import {SettingsModule} from "../settings/settings.module";
         imports: [SettingsModule],
         inject: [Settings],
         useFactory: (settings: Settings) => ({
-            type: "postgres",
+            type: settings.vars.DB_TYPE as any,
             host: settings.vars.DB_HOST,
             port: settings.vars.DB_PORT,
             username: settings.vars.DB_USER,
