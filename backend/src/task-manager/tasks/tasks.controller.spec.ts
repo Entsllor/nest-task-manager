@@ -37,6 +37,8 @@ describe("TasksController", () => {
 
     describe("create", () => {
         it("should create task", async () => {
+            const taskMock = await createTask();
+            jest.spyOn(service, "create").mockImplementation(async () => Promise.resolve(taskMock));
             const task = await controller.create(generateMock(CreateTaskSchema));
             expect(task).toEqual(TaskSchema.parse(task));
         });

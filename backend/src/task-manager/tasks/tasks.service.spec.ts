@@ -11,7 +11,7 @@ import {CommonModule} from "../../common/common.module";
 describe("TasksService", () => {
     let service: TasksService;
 
-    function createTask() {
+    async function createTask() {
         return service.create(generateMock(CreateTaskSchema));
     }
 
@@ -31,6 +31,7 @@ describe("TasksService", () => {
     describe("create", () => {
         it("should create", async () => {
             const task = await createTask();
+            console.log(task.id)
             expect(typeof task.id).toBe("string");
         });
     });
@@ -38,7 +39,7 @@ describe("TasksService", () => {
     describe("read", () => {
         it("should return undefined if not found", async () => {
             const task = await service.getOne(uuid4());
-            expect(task).toBeUndefined();
+            expect(task).toBeNull();
         });
 
         it("should return one if found", async () => {
@@ -78,7 +79,7 @@ describe("TasksService", () => {
         it("should delete and return true if exists", async () => {
             const task = await createTask();
             expect(await service.delete(task.id)).toBe(true);
-            expect(await service.getOne(task.id)).toBeUndefined();
+            expect(await service.getOne(task.id)).toBeNull();
         });
 
         it("should return false if not exists", async () => {

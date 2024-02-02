@@ -13,7 +13,7 @@ async function bootstrap() {
         .setDescription(`The ${settings.APP_NAME} API description`)
         .setVersion(settings.APP_VERSION)
         .build();
-    const port = settings.PORT;
+    const port = settings.BACKEND_PORT;
     const document = SwaggerModule.createDocument(app, swaggerConfig);
     app.useGlobalFilters(new AppExceptionsFilter());
     app.useGlobalFilters(new ZodValidationExceptionFilter());

@@ -1,0 +1,57 @@
+version: '3.4'
+services:
+  # database
+  db:
+    env_file:
+      - .env
+    image: "postgres:16.1-alpine"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGPORT: ${DB_PORT}
+    volumes:
+      - db.volume:/var/lib/postgresql/data
+    # dependent modules should start only when db is ready to accept connections
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -d ${DB_NAME} -U ${DB_USER}" ]
+      interval: 1s
+      timeout: 1s
+      retries: 5
+    networks:
+      - app.network
+
+  backend:
+    env_file: .env
+    build:
+      context: backend
+      dockerfile: Dockerfile
+      target: production
+    depends_on:
+      db:
+        condition: service_healthy
+    environment:
+      DB_HOST: db
+    networks:
+      - app.network
+
+  # nginx
+  nginx:
+    image: "nginx"
+    depends_on:
+      - backend
+    environment:
+      BACKEND_PORT: ${BACKEND_PORT}
+    ports:
+      - "80:80"
+    volumes:
+      - ./infrastructure/nginx/templates/:/etc/nginx/templates/:ro
+      - ./infrastructure/nginx/ssl/:/etc/ssl/:ro
+    networks:
+      - app.network
+
+volumes:
+  db.volume:
+networks:
+  app.network:
+    driver: bridge
