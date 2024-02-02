@@ -10,8 +10,9 @@ export class TasksService {
     constructor(@InjectRepository(Task) private taskRepo: Repository<Task>) {
     }
 
-    create(createTaskDto: CreateTaskDto): Task {
-        return this.taskRepo.create(createTaskDto);
+    async create(createTaskDto: CreateTaskDto): Promise<Task> {
+        const task = this.taskRepo.create(createTaskDto);
+        return this.taskRepo.save(task);
     }
 
     getOne(taskId: UUID): Promise<Task | null> {
@@ -23,6 +24,9 @@ export class TasksService {
     }
 
     async update(taskId: UUID, data: UpdateTaskDto): Promise<Task | undefined> {
+        const task = await this.taskRepo.findOneBy({id: taskId});
+        if (!task)
+            return undefined;
         return this.taskRepo.save({id: taskId, ...data});
     }
 

@@ -7,7 +7,7 @@ import {AppMode, configSchema} from "./settings.types";
 @Module({
     imports: [ConfigModule.forRoot({
         validate: configSchema.parse,
-        envFilePath: process.env.NODE_ENV === AppMode.test ? ".env.test" : undefined,
+        envFilePath: process.env.NODE_ENV === AppMode.test ? "../.env.test" : "../.env",
     })],
     providers: [Settings],
 })

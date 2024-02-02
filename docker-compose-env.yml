@@ -1,0 +1,16 @@
+version: '3.4'
+services:
+  # database
+  db:
+    image: "postgres:16.1-alpine"
+    ports:
+      - "${DB_PORT}:${DB_PORT}"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      PGPORT: ${DB_PORT}
+
+networks:
+  app.network:
+    driver: bridge

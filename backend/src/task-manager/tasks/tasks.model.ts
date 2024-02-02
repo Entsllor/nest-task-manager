@@ -1,10 +1,9 @@
 import {Column, Entity, PrimaryGeneratedColumn} from "typeorm";
-import {UUID} from "backend-batteries";
 
 @Entity({})
 export class Task {
     @PrimaryGeneratedColumn("uuid")
-    id: UUID;
+    id: string;
 
     @Column({length: 63})
     title: string;
