@@ -8,9 +8,9 @@ import {faker} from "@faker-js/faker";
 import {TaskNotFound} from "../task-manager.exceptions";
 import {expectError} from "../../helpers/tests-utils/expect-error";
 import {expectSchema} from "../../helpers/tests-utils/expect-schema";
-import {TypeOrmModule} from "@nestjs/typeorm";
 import {Task} from "./tasks.model";
 import {CommonModule} from "../../common/common.module";
+import {TasksRepository} from "./tasks.repository";
 
 describe("TasksController", () => {
     let controller: TasksController;
@@ -23,11 +23,11 @@ describe("TasksController", () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [TasksController],
-            providers: [TasksService],
-            imports: [CommonModule, TypeOrmModule.forFeature([Task])],
+            providers: [TasksService, TasksRepository],
+            imports: [CommonModule],
         }).compile();
 
-        controller = module.get<TasksController>(TasksController);
+        controller = module.get(TasksController);
         service = module.get(TasksService);
     });
 
@@ -88,13 +88,13 @@ describe("TasksController", () => {
     describe("delete", () => {
         it("should delete if exists", async () => {
             const task = await createTask();
-            jest.spyOn(service, "delete").mockImplementation(async () => true);
+            jest.spyOn(service, "delete").mockImplementation(async () => 1);
             const result = await controller.delete(task.id);
             expect(result).toEqual({ok: true});
         });
 
         it("should return false if not exists", async () => {
-            jest.spyOn(service, "delete").mockImplementation(async () => false);
+            jest.spyOn(service, "delete").mockImplementation(async () => 0);
             const action = controller.delete(uuid4());
             await expectError(action, new TaskNotFound);
         });

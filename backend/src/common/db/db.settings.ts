@@ -9,7 +9,7 @@ export function getDbSettings(envVars: ISettings): DataSourceOptions {
         username: envVars.DB_USER,
         password: envVars.DB_PASSWORD,
         database: envVars.DB_NAME,
-        logging: false,
+        logging: envVars.NODE_ENV === AppMode.development,
         entities: ["src/**/*.model.{js,ts}"],
         migrations: ["migrations/*.{js,ts}"],
         subscribers: [],
