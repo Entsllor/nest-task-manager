@@ -36,6 +36,7 @@
     "backend-batteries": "^0.2.4",
     "faker": "^6.6.6",
     "mo": "^1.7.3",
+    "nestjs-cls": "^4.0.3",
     "nestjs-zod": "^3.0.0",
     "pg": "^8.11.3",
     "radash": "^11.0.0",

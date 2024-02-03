@@ -4,9 +4,8 @@ import {generateMock} from "@anatine/zod-mock";
 import {CreateTaskSchema} from "./tasks.schemas";
 import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
-import {TypeOrmModule} from "@nestjs/typeorm";
-import {Task} from "./tasks.model";
 import {CommonModule} from "../../common/common.module";
+import {TasksRepository} from "./tasks.repository";
 
 describe("TasksService", () => {
     let service: TasksService;
@@ -17,8 +16,8 @@ describe("TasksService", () => {
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [TasksService],
-            imports: [CommonModule, TypeOrmModule.forFeature([Task])],
+            providers: [TasksRepository, TasksService],
+            imports: [CommonModule],
         }).compile();
 
         service = module.get<TasksService>(TasksService);
@@ -31,7 +30,6 @@ describe("TasksService", () => {
     describe("create", () => {
         it("should create", async () => {
             const task = await createTask();
-            console.log(task.id)
             expect(typeof task.id).toBe("string");
         });
     });
@@ -76,14 +74,14 @@ describe("TasksService", () => {
     });
 
     describe("delete", () => {
-        it("should delete and return true if exists", async () => {
+        it("should delete and return 1 if exists", async () => {
             const task = await createTask();
-            expect(await service.delete(task.id)).toBe(true);
+            expect(await service.delete(task.id)).toBe(1);
             expect(await service.getOne(task.id)).toBeNull();
         });
 
-        it("should return false if not exists", async () => {
-            expect(await service.delete(uuid4())).toBe(false);
+        it("should return 0 if not exists", async () => {
+            expect(await service.delete(uuid4())).toBe(0);
         });
     });
 });

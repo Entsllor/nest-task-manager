@@ -4,18 +4,23 @@ import {TypeOrmModule} from "@nestjs/typeorm";
 import {SettingsModule} from "../settings/settings.module";
 import {getDbSettings} from "./db.settings";
 import {join} from "path";
-import {BASE_PATH, SRC_PATH} from "../../helpers/paths";
+import {BASE_PATH} from "../../helpers/paths";
+import {TransactionsInterceptor} from "./db.transactions.interceptor";
+import {ClsModule} from "nestjs-cls";
+import {Task} from "../../task-manager/tasks/tasks.model";
 
 
 @Module({
-    imports: [SettingsModule, TypeOrmModule.forRootAsync({
+    providers: [TransactionsInterceptor],
+    exports: [TransactionsInterceptor],
+    imports: [SettingsModule, ClsModule, TypeOrmModule.forRootAsync({
         imports: [SettingsModule],
         inject: [Settings],
         useFactory: (settings: Settings) => ({
             ...getDbSettings(settings.vars),
+
             migrations: [join(BASE_PATH, "migrations", "*.{ts,js}")],
-            autoLoadEntities: true,
-            entities: [join(SRC_PATH, "**", "*.model.js")],
+            entities: [Task],
         }),
     })],
 })

@@ -1,7 +1,7 @@
-import {Body, Controller, Get, Param, ParseUUIDPipe, Post, Put} from "@nestjs/common";
+import {Body, Controller, Get, Param, ParseUUIDPipe, Post, Put, Query} from "@nestjs/common";
 import {raise, UUID} from "backend-batteries";
 import {TasksService} from "./tasks.service";
-import {CreateTaskDto, UpdateTaskDto} from "./tasks.schemas";
+import {CreateTaskDto, TaskSearchDto, UpdateTaskDto} from "./tasks.schemas";
 import {TaskNotFound} from "../task-manager.exceptions";
 
 @Controller("tasks")
@@ -16,8 +16,8 @@ export class TasksController {
     }
 
     @Get()
-    getMany() {
-        return this.tasksService.getMany();
+    getMany(@Query() query?: TaskSearchDto) {
+        return this.tasksService.getMany(query);
     }
 
     @Get(":id")
@@ -25,13 +25,13 @@ export class TasksController {
         return await this.tasksService.getOne(id) || raise(TaskNotFound);
     }
 
-    @Put("id")
+    @Put(":id")
     async update(@Param("id", ParseUUIDPipe) id: UUID, @Body() body: UpdateTaskDto) {
         return await this.tasksService.update(id, body) || raise(TaskNotFound);
     }
 
-    @Put("id")
+    @Put(":id")
     async delete(@Param("id", ParseUUIDPipe) id: UUID) {
-        return {ok: await this.tasksService.delete(id) || raise(TaskNotFound)};
+        return {ok: !!await this.tasksService.delete(id) || raise(TaskNotFound)};
     }
 }

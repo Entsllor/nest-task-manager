@@ -3950,6 +3950,11 @@ neo-async@^2.6.2:
   resolved "https://registry.npmjs.org/neo-async/-/neo-async-2.6.2.tgz"
   integrity sha512-Yd3UES5mWCSqR+qNT93S3UoYUkqAZ9lLg8a7g9rimsWmYGK8cVToA4/sF3RrshdyV3sAGMXVUmpMYOw+dLpOuw==
 
+nestjs-cls@^4.0.3:
+  version "4.0.3"
+  resolved "https://registry.yarnpkg.com/nestjs-cls/-/nestjs-cls-4.0.3.tgz#137a8f3b1253659ae0f692e8a1a27f25352c6779"
+  integrity sha512-bhVIcoDBe32nhfvLIc4JHXHxgE5WJHYuW5WySCQU3Zz+6KlOzW4Q4agLo+Maz5toXPkufF5QqVJXFUHwhtlsWg==
+
 nestjs-zod@^3.0.0:
   version "3.0.0"
   resolved "https://registry.yarnpkg.com/nestjs-zod/-/nestjs-zod-3.0.0.tgz#1e8a016d0ad38b6a8169fa504ae39828da75c6db"
