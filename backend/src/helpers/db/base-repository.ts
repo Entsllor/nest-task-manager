@@ -6,14 +6,17 @@ export abstract class BaseRepository<T extends ObjectLiteral> {
     abstract model: EntityTarget<T>;
     readonly idFieldName = "id";
 
+
     constructor(private dataSource: DataSource, private cls: ClsService) {
     }
+
+    abstract getById(id: any, ...extraPrimaryKeys: any[]): Promise<T | null>
 
     private initRepo(): Repository<T> {
         return ((this.cls?.get(QUERY_MANAGER_KEY) as EntityManager | undefined) ?? this.dataSource).getRepository(this.model);
     }
 
-    private get repo(): Repository<T> {
+    protected get repo(): Repository<T> {
         return this.initRepo();
     }
 

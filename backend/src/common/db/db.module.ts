@@ -8,6 +8,7 @@ import {BASE_PATH} from "../../helpers/paths";
 import {TransactionsInterceptor} from "./db.transactions.interceptor";
 import {ClsModule} from "nestjs-cls";
 import {Task} from "../../task-manager/tasks/tasks.model";
+import {User} from "../../auth/users/users.model";
 
 
 @Module({
@@ -18,9 +19,8 @@ import {Task} from "../../task-manager/tasks/tasks.model";
         inject: [Settings],
         useFactory: (settings: Settings) => ({
             ...getDbSettings(settings.vars),
-
             migrations: [join(BASE_PATH, "migrations", "*.{ts,js}")],
-            entities: [Task],
+            entities: [Task, User],
         }),
     })],
 })
