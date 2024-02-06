@@ -4,6 +4,8 @@ import {SignupDto} from "./users.schemas";
 import {raise, UUID} from "backend-batteries";
 import {NotUniqueEmail, NotUniqueUsername} from "../auth.exceptions";
 import {PasswordsService} from "../passwords/passwords.service";
+import {DeepPartial} from "typeorm";
+import {User} from "./users.model";
 
 @Injectable()
 export class UsersService {
@@ -27,5 +29,9 @@ export class UsersService {
 
     findOne(id: UUID) {
         return this.repo.getById(id);
+    }
+
+    update(id: UUID, data: DeepPartial<User>) {
+        return this.repo.updateOne({id}, data);
     }
 }
