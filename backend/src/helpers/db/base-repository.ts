@@ -33,7 +33,7 @@ export abstract class BaseRepository<T extends ObjectLiteral> {
         return this.repo.save(entity);
     }
 
-    async updateOne(filters: DeepPartial<T>, values: DeepPartial<T>) {
+    async updateOne(filters: DeepPartial<T>, values: DeepPartial<T>): Promise<T | undefined> {
         const entity = await this.repo.findOneBy(filters);
         if (!entity) {
             return undefined;
