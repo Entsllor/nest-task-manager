@@ -13,19 +13,27 @@ patchNestJsSwagger();
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
     const settings = app.get(Settings).vars;
-    const swaggerConfig = new DocumentBuilder()
-        .setTitle(settings.APP_NAME)
-        .setDescription(`The ${settings.APP_NAME} API description`)
-        .setVersion(settings.APP_VERSION)
-        .build();
-    const port = settings.BACKEND_PORT;
-    const document = SwaggerModule.createDocument(app, swaggerConfig);
-    const {httpAdapter} = app.get(HttpAdapterHost);
-    app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
-    app.useGlobalFilters(new AppExceptionsFilter(httpAdapter));
-    app.useGlobalFilters(new ZodValidationExceptionFilter(httpAdapter));
-    SwaggerModule.setup(settings.SWAGGER_URL_PREFIX, app, document);
-    await app.listen(port);
+
+    {
+        // exceptions filters
+        const {httpAdapter} = app.get(HttpAdapterHost);
+        app.useGlobalFilters(new AllExceptionsFilter(httpAdapter));
+        app.useGlobalFilters(new AppExceptionsFilter(httpAdapter));
+        app.useGlobalFilters(new ZodValidationExceptionFilter(httpAdapter));
+    }
+
+    {
+        // swagger
+        const swaggerConfig = new DocumentBuilder()
+            .setTitle(settings.APP_NAME)
+            .setDescription(`The ${settings.APP_NAME} API description`)
+            .setVersion(settings.APP_VERSION)
+            .build();
+        const document = SwaggerModule.createDocument(app, swaggerConfig);
+        SwaggerModule.setup(settings.SWAGGER_URL_PREFIX, app, document);
+    }
+
+    await app.listen(settings.BACKEND_PORT);
 }
 
 

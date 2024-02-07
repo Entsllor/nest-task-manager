@@ -1,11 +1,12 @@
 import {Injectable} from "@nestjs/common";
-import {PasswordsService} from "./passwords.service";
+
+import {IPasswordsService} from "./passwords.types";
 
 
 const prefix = "secret";
 
 @Injectable()
-export class DummyPasswordsService implements PasswordsService {
+export class DummyPasswordsService implements IPasswordsService {
     async hash(plainTextPassword: string): Promise<string> {
         return Promise.resolve(prefix + plainTextPassword);
     }

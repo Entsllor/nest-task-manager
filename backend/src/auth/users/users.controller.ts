@@ -1,18 +1,10 @@
-import {applyDecorators, Body, Controller, Get, Param, ParseUUIDPipe, Post, Put} from "@nestjs/common";
+import {Body, Controller, Get, Param, ParseUUIDPipe, Post, Put} from "@nestjs/common";
 import {UsersService} from "./users.service";
 import {raise, UUID} from "backend-batteries";
 import {PrivateUserDto, PublicUserDto, SignupDto, UpdateUserDto} from "./users.schemas";
 import {UserNotFound} from "../auth.exceptions";
-import {ApiOkResponse, ApiResponseMetadata} from "@nestjs/swagger";
-import {ZodDto, ZodSerializerDto} from "nestjs-zod";
+import {ParseResponse} from "../../helpers/decorators/parse-response";
 
-
-function ParseResponse(options: ApiResponseMetadata & {type: ZodDto}) {
-    return applyDecorators(
-        ZodSerializerDto(options.type),
-        ApiOkResponse(options),
-    );
-}
 
 @Controller()
 export class UsersController {
