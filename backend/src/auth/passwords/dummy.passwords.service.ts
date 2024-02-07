@@ -8,10 +8,10 @@ const prefix = "secret";
 @Injectable()
 export class DummyPasswordsService implements IPasswordsService {
     async hash(plainTextPassword: string): Promise<string> {
-        return Promise.resolve(prefix + plainTextPassword);
+        return Promise.resolve(prefix + "_" + plainTextPassword);
     }
 
     async check(plainTextPassword: string, passwordHash: string): Promise<boolean> {
-        return Promise.resolve(prefix + plainTextPassword === passwordHash);
+        return Promise.resolve((prefix + "_" + plainTextPassword) === passwordHash);
     }
 }

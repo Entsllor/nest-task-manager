@@ -3,8 +3,7 @@ import {AppController} from "./app.controller";
 import {AppService} from "./app.service";
 import {CommonModule} from "./common/common.module";
 import {TaskManagerModule} from "./task-manager/task-manager.module";
-import {APP_INTERCEPTOR, APP_PIPE} from "@nestjs/core";
-import {ZodSerializerInterceptor, ZodValidationPipe} from "nestjs-zod";
+import {APP_INTERCEPTOR} from "@nestjs/core";
 import {TransactionsInterceptor} from "./common/db/db.transactions.interceptor";
 import {UsersModule} from "./auth/users/users.module";
 import {AuthModule} from "./auth/auth.module";
@@ -14,8 +13,6 @@ import {AuthModule} from "./auth/auth.module";
     controllers: [AppController],
     providers: [
         AppService,
-        {provide: APP_PIPE, useClass: ZodValidationPipe},
-        {provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor},
         {provide: APP_INTERCEPTOR, useClass: TransactionsInterceptor},
     ],
 })
