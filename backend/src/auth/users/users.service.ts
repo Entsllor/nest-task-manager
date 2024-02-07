@@ -3,13 +3,13 @@ import {UsersRepository} from "./users.repository";
 import {SignupDto} from "./users.schemas";
 import {raise, UUID} from "backend-batteries";
 import {NotUniqueEmail, NotUniqueUsername} from "../auth.exceptions";
-import {PasswordsService} from "../passwords/passwords.service";
 import {DeepPartial} from "typeorm";
 import {User} from "./users.model";
+import {IPasswordsService} from "../passwords/passwords.types";
 
 @Injectable()
 export class UsersService {
-    constructor(private readonly passwordsService: PasswordsService, private repo: UsersRepository) {
+    constructor(private readonly passwordsService: IPasswordsService, private repo: UsersRepository) {
     }
 
     async signup(signupDto: SignupDto) {
