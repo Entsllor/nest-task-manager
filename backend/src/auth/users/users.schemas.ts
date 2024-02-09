@@ -6,11 +6,9 @@ import {
     MAX_PASSWORD_LENGTH,
     MAX_USERNAME_LENGTH,
     MIN_PASSWORD_LENGTH,
-    MIN_USER_AGE,
     MIN_USERNAME_LENGTH,
 } from "./users.const";
 import {timeZoneType} from "../../helpers/validation/tz";
-import {subYears} from "date-fns";
 
 const usernameType = z.string().min(MIN_USERNAME_LENGTH).max(MAX_USERNAME_LENGTH).toLowerCase().regex(new RegExp(`^[a-zA-Z0-9_.]{${MIN_USERNAME_LENGTH},${MAX_USERNAME_LENGTH}}$`));
 
@@ -22,12 +20,7 @@ export const SignupSchema = z.object({
     lastName: Optional(z.string().max(MAX_NAMES_LENGTH)),
     firstName: Optional(z.string().max(MAX_NAMES_LENGTH)),
     secondName: Optional(z.string().max(MAX_NAMES_LENGTH)),
-    birthdate: Optional(
-        z.date({coerce: true})
-            .refine(
-                arg => arg < subYears(new Date(), MIN_USER_AGE),
-                `user should be at least ${MIN_USER_AGE} years old`),
-    ),
+    birthdate: Optional(z.coerce.date()),
     timezone: Optional(timeZoneType),
 });
 
@@ -49,7 +42,7 @@ export const PublicUserSchema = z.object({
     lastName: Optional(z.string().max(MAX_NAMES_LENGTH)),
     firstName: Optional(z.string().max(MAX_NAMES_LENGTH)),
     secondName: Optional(z.string().max(MAX_NAMES_LENGTH)),
-    createdAt: z.date(),
+    createdAt: z.coerce.date(),
 });
 
 export class PublicUserDto extends createZodDto(PublicUserSchema) {
