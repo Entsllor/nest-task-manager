@@ -20,5 +20,4 @@ export class UsersRepository extends BaseRepository<User> {
     getById(id: UUID) {
         return this.repo.findOneBy({id});
     }
-
 }

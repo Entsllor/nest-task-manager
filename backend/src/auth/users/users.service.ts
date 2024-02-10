@@ -31,6 +31,10 @@ export class UsersService {
         return this.repo.getById(id);
     }
 
+    findByEmail(email: string) {
+        return this.repo.first({email})
+    }
+
     update(id: UUID, data: DeepPartial<User>) {
         return this.repo.updateOne({id}, data);
     }

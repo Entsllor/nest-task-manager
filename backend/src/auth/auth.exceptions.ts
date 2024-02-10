@@ -12,3 +12,7 @@ export class NotUniqueUsername extends BadRequest {
 export class NotUniqueEmail extends BadRequest {
 
 }
+
+export class NotValidELoginOrPassword {
+
+}
