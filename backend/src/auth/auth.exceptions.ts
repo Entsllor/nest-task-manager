@@ -16,3 +16,7 @@ export class NotUniqueEmail extends BadRequest {
 export class NotValidELoginOrPassword {
 
 }
+
+export class RefreshTokenRequired extends BadRequest {
+    message='Cannot find refreshToken in cookies'
+}

@@ -4,11 +4,11 @@ import {ExtractJwt, Strategy} from "passport-jwt";
 import {Settings} from "../../common/settings/settings.service";
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class ExpiredJwtStrategy extends PassportStrategy(Strategy, 'expired-jwt') {
     constructor(settings: Settings) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
-            ignoreExpiration: false,
+            ignoreExpiration: true,
             secretOrKey: settings.vars.JWT_SECRET_KEY,
         });
     }
