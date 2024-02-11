@@ -1,11 +1,13 @@
-import {Body, Controller, Post, Req, Response} from "@nestjs/common";
+import {Body, Controller, Post, Response} from "@nestjs/common";
 import {Public} from "./decorators/public.decorator";
 import {ParseResponse} from "../helpers/decorators/parse-response";
 import {LoginDto, PrivateUserDto, SignupDto} from "./users/users.schemas";
 import {UsersService} from "./users/users.service";
-import {AuthService} from "./auth.service";
+import {AuthService, IJwtPayload} from "./auth.service";
 import {HttpAdapterHost} from "@nestjs/core";
-import {Request} from "express";
+import {AllowExpiredJwt} from "./decorators/allow-expired.jwt";
+import {JwtPayload} from "./decorators/jwt-payload.decorator";
+import {RefreshToken} from "./refresh-tokens/refresh-tokens.pipe";
 
 @Controller("auth")
 export class AuthController {
@@ -19,10 +21,11 @@ export class AuthController {
         return this.usersService.signup(signupDto);
     }
 
-    @Post('refresh')
-    async refresh(@Req() req: Request) {
-        console.log(req.cookies)
-        console.log(req.headers)
+    @Post("refresh")
+    @AllowExpiredJwt()
+    async refresh(@RefreshToken() refreshToken: string, @JwtPayload() payload: IJwtPayload) {
+        console.log(refreshToken);
+        console.log(payload);
     }
 
     @Public()

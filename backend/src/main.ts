@@ -6,12 +6,14 @@ import {DocumentBuilder, SwaggerModule} from "@nestjs/swagger";
 import {AppExceptionsFilter} from "./helpers/exceptions/app-exceptions.filter";
 import {AllExceptionsFilter} from "./helpers/exceptions/all-exceptions.filter";
 import {ZodValidationExceptionFilter} from "./helpers/exceptions/zod-exception.filter";
+import * as cookieParser from "cookie-parser";
 
 patchNestJsSwagger();
 
 
 async function bootstrap() {
     const app = await NestFactory.create(AppModule);
+    app.use(cookieParser());
     const settings = app.get(Settings).vars;
 
     {
