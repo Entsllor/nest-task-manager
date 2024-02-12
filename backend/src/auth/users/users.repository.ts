@@ -17,7 +17,7 @@ export class UsersRepository extends BaseRepository<User> {
         return this.repo.findOne({where: [{username}, {email}]});
     }
 
-    getById(id: UUID) {
+    getByPk(id: UUID) {
         return this.repo.findOneBy({id});
     }
 }

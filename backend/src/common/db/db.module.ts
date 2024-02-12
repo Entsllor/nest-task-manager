@@ -9,6 +9,7 @@ import {TransactionsInterceptor} from "./db.transactions.interceptor";
 import {ClsModule} from "nestjs-cls";
 import {Task} from "../../task-manager/tasks/tasks.model";
 import {User} from "../../auth/users/users.model";
+import {RefreshToken} from "../../auth/refresh-tokens/refresh-tokens.model";
 
 
 @Module({
@@ -20,7 +21,7 @@ import {User} from "../../auth/users/users.model";
         useFactory: (settings: Settings) => ({
             ...getDbSettings(settings.vars),
             migrations: [join(BASE_PATH, "migrations", "*.{ts,js}")],
-            entities: [Task, User],
+            entities: [Task, User, RefreshToken],
         }),
     })],
 })

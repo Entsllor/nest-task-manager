@@ -4,13 +4,13 @@ import {QUERY_MANAGER_KEY} from "../../common/db/db.transactions.interceptor";
 
 export abstract class BaseRepository<Entity extends ObjectLiteral> {
     abstract model: EntityTarget<Entity>;
-    readonly idFieldName = "id";
+    readonly idFieldName: string = "id";
 
 
     constructor(private dataSource: DataSource, private cls: ClsService) {
     }
 
-    abstract getById(id: any, ...extraPrimaryKeys: any[]): Promise<Entity | null>
+    abstract getByPk(id: any, ...extraPrimaryKeys: any[]): Promise<Entity | null>
 
     private initRepo(): Repository<Entity> {
         return ((this.cls?.get(QUERY_MANAGER_KEY) as EntityManager | undefined) ?? this.dataSource).getRepository(this.model);

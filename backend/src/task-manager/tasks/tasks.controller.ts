@@ -9,7 +9,6 @@ import {EmptyResponse} from "../../helpers/decorators/empty-response";
 @Controller("tasks")
 export class TasksController {
     constructor(private tasksService: TasksService) {
-        this.tasksService = tasksService;
     }
 
     @Post()

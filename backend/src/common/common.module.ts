@@ -5,6 +5,7 @@ import {DbModule} from "./db/db.module";
 import {ClsModule} from "nestjs-cls";
 import {APP_INTERCEPTOR, APP_PIPE} from "@nestjs/core";
 import {ZodSerializerInterceptor, ZodValidationPipe} from "nestjs-zod";
+import {CookiesService} from "./cookies/cookies.service";
 
 @Global()
 @Module({
@@ -14,9 +15,10 @@ import {ZodSerializerInterceptor, ZodValidationPipe} from "nestjs-zod";
             mount: true,
         },
     })],
-    exports: [Settings, ClsModule],
+    exports: [Settings, ClsModule, CookiesService],
     providers: [
         Settings,
+        CookiesService,
         {provide: APP_PIPE, useClass: ZodValidationPipe},
         {provide: APP_INTERCEPTOR, useClass: ZodSerializerInterceptor},
     ],

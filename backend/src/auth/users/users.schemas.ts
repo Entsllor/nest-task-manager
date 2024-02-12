@@ -1,6 +1,6 @@
 import {z} from "nestjs-zod/z";
 import {createZodDto} from "nestjs-zod";
-import {Optional} from "../../helpers/validation/optional";
+import {Maybe} from "../../helpers/validation/maybe";
 import {
     MAX_NAMES_LENGTH,
     MAX_PASSWORD_LENGTH,
@@ -17,11 +17,11 @@ export const SignupSchema = z.object({
     email: z.string().email(),
     password: z.string().min(MIN_PASSWORD_LENGTH).max(MAX_PASSWORD_LENGTH),
     username: usernameType,
-    lastName: Optional(z.string().max(MAX_NAMES_LENGTH)),
-    firstName: Optional(z.string().max(MAX_NAMES_LENGTH)),
-    secondName: Optional(z.string().max(MAX_NAMES_LENGTH)),
-    birthdate: Optional(z.coerce.date()),
-    timezone: Optional(timeZoneType),
+    lastName: Maybe(z.string().max(MAX_NAMES_LENGTH)),
+    firstName: Maybe(z.string().max(MAX_NAMES_LENGTH)),
+    secondName: Maybe(z.string().max(MAX_NAMES_LENGTH)),
+    birthdate: Maybe(z.coerce.date()),
+    timezone: Maybe(timeZoneType),
 });
 
 export class SignupDto extends createZodDto(SignupSchema) {
@@ -39,9 +39,9 @@ export class LoginDto extends createZodDto(LoginSchema) {
 export const PublicUserSchema = z.object({
     id: z.string().uuid(),
     username: usernameType,
-    lastName: Optional(z.string().max(MAX_NAMES_LENGTH)),
-    firstName: Optional(z.string().max(MAX_NAMES_LENGTH)),
-    secondName: Optional(z.string().max(MAX_NAMES_LENGTH)),
+    lastName: Maybe(z.string().max(MAX_NAMES_LENGTH)),
+    firstName: Maybe(z.string().max(MAX_NAMES_LENGTH)),
+    secondName: Maybe(z.string().max(MAX_NAMES_LENGTH)),
     createdAt: z.coerce.date(),
 });
 
@@ -51,7 +51,7 @@ export class PublicUserDto extends createZodDto(PublicUserSchema) {
 export const PrivateUserSchema = PublicUserSchema.extend({
     email: z.string(),
     updatedAt: z.coerce.date(),
-    timezone: Optional(timeZoneType),
+    timezone: Maybe(timeZoneType),
 });
 
 export class PrivateUserDto extends createZodDto(PrivateUserSchema) {

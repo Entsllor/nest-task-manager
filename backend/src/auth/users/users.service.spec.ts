@@ -81,7 +81,7 @@ describe("UsersService", () => {
             const user = await createUser();
             const newLastName = faker.person.lastName();
             await service.update(user.id, {lastName: newLastName});
-            const updatedUser = await repo.getById(user.id);
+            const updatedUser = await repo.getByPk(user.id);
             expect(updatedUser).toEqual({...user, lastName: newLastName, updatedAt: updatedUser?.updatedAt});
         });
 

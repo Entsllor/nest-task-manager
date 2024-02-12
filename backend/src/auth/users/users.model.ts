@@ -1,4 +1,5 @@
-import {Column, CreateDateColumn, Entity, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
+import {RefreshToken} from "../refresh-tokens/refresh-tokens.model";
 
 @Entity({})
 export class User {
@@ -32,6 +33,6 @@ export class User {
     @UpdateDateColumn({type: "timestamptz"})
     updatedAt: Date;
 
-    // @OneToMany(() => RefreshToken, object => object.user)
-    // refreshTokens: RefreshToken[];
+    @OneToMany(() => RefreshToken, object => object.user)
+    refreshTokens: RefreshToken[];
 }
