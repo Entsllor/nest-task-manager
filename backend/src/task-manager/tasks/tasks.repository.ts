@@ -8,7 +8,7 @@ import {Injectable} from "@nestjs/common";
 export class TasksRepository extends BaseRepository<Task> {
     model: EntityTarget<Task> = Task;
 
-    getById(id: string): Promise<Task | null> {
+    getByPk(id: string): Promise<Task | null> {
         return this.repo.findOneBy({id});
     }
 

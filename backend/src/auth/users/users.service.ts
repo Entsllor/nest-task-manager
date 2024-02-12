@@ -28,7 +28,7 @@ export class UsersService {
     }
 
     findOne(id: UUID) {
-        return this.repo.getById(id);
+        return this.repo.getByPk(id);
     }
 
     findByEmail(email: string) {

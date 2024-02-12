@@ -1,12 +1,13 @@
 import {z} from "nestjs-zod/z";
 import {createZodDto} from "nestjs-zod";
+import {Maybe} from "../../helpers/validation/maybe";
 
 
 export const CreateTaskSchema = z.object({
     title: z.string(),
-    description: z.string().optional(),
-    deadline: z.coerce.date().min(new Date()).optional(),
-    isHighPriority: z.coerce.boolean().optional(),
+    description: Maybe(z.string()),
+    deadline: Maybe(z.coerce.date().min(new Date())),
+    isHighPriority: Maybe(z.coerce.boolean()),
 });
 
 export class CreateTaskDto extends createZodDto(CreateTaskSchema) {

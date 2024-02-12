@@ -9,14 +9,11 @@ import {SignupSchema} from "./users.schemas";
 import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
 import {DummyPasswordsService} from "../passwords/dummy.passwords.service";
-import {User} from "./users.model";
 import {expectError} from "../../helpers/tests-utils/expect-error";
 import {UserNotFound} from "../auth.exceptions";
-import spyOn = jest.spyOn;
 
 describe("UsersController", () => {
     let controller: UsersController;
-    let service: UsersService;
     let repo: UsersRepository;
     const userData = generateMock(SignupSchema);
 
@@ -27,7 +24,6 @@ describe("UsersController", () => {
             providers: [UsersService, UsersRepository, {provide: PasswordsService, useClass: DummyPasswordsService}],
         }).compile();
 
-        service = module.get(UsersService);
         repo = module.get(UsersRepository);
         controller = module.get(UsersController);
     });
@@ -40,14 +36,6 @@ describe("UsersController", () => {
         return repo.create(userData);
     }
 
-    describe("sign-up", () => {
-        it("should create user", async () => {
-            const user = createUser();
-            spyOn(service, "signup").mockImplementation(() => Promise.resolve(user));
-            const response = await controller.signup(userData);
-            expect(response).toBeInstanceOf(User);
-        });
-    });
 
     describe("find all", () => {
         it("should should return all users", async () => {

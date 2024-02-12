@@ -29,7 +29,7 @@ async function bootstrap() {
         const swaggerConfig = new DocumentBuilder()
             .setTitle(settings.APP_NAME)
             .setDescription(`The ${settings.APP_NAME} API description`)
-            .setVersion(settings.APP_VERSION)
+            .setVersion(settings.APP_VERSION).addBearerAuth()
             .build();
         const document = SwaggerModule.createDocument(app, swaggerConfig);
         SwaggerModule.setup(settings.SWAGGER_URL_PREFIX, app, document);
