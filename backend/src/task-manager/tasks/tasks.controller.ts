@@ -5,7 +5,9 @@ import {CreateTaskDto, TaskDto, TaskSearchDto, UpdateTaskDto} from "./tasks.sche
 import {TaskNotFound} from "../task-manager.exceptions";
 import {ParseResponse} from "../../helpers/decorators/parse-response";
 import {EmptyResponse} from "../../helpers/decorators/empty-response";
+import {OpenApiSettings} from "../../helpers/decorators/open-api-settings";
 
+@OpenApiSettings("tasks")
 @Controller("tasks")
 export class TasksController {
     constructor(private tasksService: TasksService) {

@@ -6,8 +6,9 @@ import {UserNotFound} from "../auth.exceptions";
 import {ParseResponse} from "../../helpers/decorators/parse-response";
 import {CurrentUser} from "../decorators/current-user.pipe";
 import {User} from "./users.model";
+import {OpenApiSettings} from "../../helpers/decorators/open-api-settings";
 
-
+@OpenApiSettings("users")
 @Controller("users")
 export class UsersController {
     constructor(private readonly usersService: UsersService) {

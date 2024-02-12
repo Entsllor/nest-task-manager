@@ -12,7 +12,10 @@ import {FailedToParseClientIp, FailedToParseUserAgent} from "./auth.exceptions";
 import {IRequest} from "../helpers/types/util-types";
 
 import {CookiesService} from "../common/cookies/cookies.service";
+import {OpenApiSettings} from "../helpers/decorators/open-api-settings";
+import {ApiBearerAuth} from "@nestjs/swagger";
 
+@OpenApiSettings("auth", {auth: "public"})
 @Controller("auth")
 export class AuthController {
     constructor(private readonly usersService: UsersService, private authService: AuthService, private cookies: CookiesService) {
@@ -26,6 +29,7 @@ export class AuthController {
     }
 
     @Post("refresh")
+    @ApiBearerAuth()
     @AllowExpiredJwt()
     async refresh(@RefreshTokenBody() refreshTokenBody: string, @JwtPayload() payload: IJwtPayload, @Req() req: IRequest) {
         const [refreshToken, accessToken] = await this.authService.refreshTokens(refreshTokenBody, payload, {
