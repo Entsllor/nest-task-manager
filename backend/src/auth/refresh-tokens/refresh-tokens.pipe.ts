@@ -4,8 +4,12 @@ import {raise} from "backend-batteries";
 import {RefreshTokenRequired} from "../auth.exceptions";
 
 export const RefreshTokenBody = createParamDecorator(
-    (_data: unknown, ctx: ExecutionContext) => {
+    (data: {optional?: boolean} | undefined, ctx: ExecutionContext) => {
         const request = ctx.switchToHttp().getRequest<Request>();
-        return request.cookies?.["refreshToken"] || raise(RefreshTokenRequired);
+        const refreshToken = request.cookies?.["refreshToken"];
+        if (!refreshToken && !data?.optional) {
+            raise(RefreshTokenRequired);
+        }
+        return refreshToken;
     },
 );

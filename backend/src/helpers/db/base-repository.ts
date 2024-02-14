@@ -1,4 +1,12 @@
-import {DataSource, DeepPartial, EntityManager, EntityTarget, ObjectLiteral, Repository} from "typeorm";
+import {
+    DataSource,
+    DeepPartial,
+    EntityManager,
+    EntityTarget,
+    FindOptionsWhere,
+    ObjectLiteral,
+    Repository,
+} from "typeorm";
 import {ClsService} from "nestjs-cls";
 import {QUERY_MANAGER_KEY} from "../../common/db/db.transactions.interceptor";
 
@@ -20,11 +28,11 @@ export abstract class BaseRepository<Entity extends ObjectLiteral> {
         return this.initRepo();
     }
 
-    first(criteria?: DeepPartial<Entity>) {
+    first(criteria?: FindOptionsWhere<Entity>) {
         return this.repo.findOneBy(criteria ?? {});
     }
 
-    findMany(criteria?: DeepPartial<Entity>) {
+    findMany(criteria?: FindOptionsWhere<Entity>) {
         return this.repo.findBy(criteria ?? {});
     }
 
@@ -33,7 +41,7 @@ export abstract class BaseRepository<Entity extends ObjectLiteral> {
         return this.repo.save(entity);
     }
 
-    async updateOne(filters: DeepPartial<Entity>, values: DeepPartial<Entity>): Promise<Entity | undefined> {
+    async updateOne(filters: FindOptionsWhere<Entity>, values: DeepPartial<Entity>): Promise<Entity | undefined> {
         const entity = await this.repo.findOneBy(filters);
         if (!entity) {
             return undefined;
@@ -46,11 +54,11 @@ export abstract class BaseRepository<Entity extends ObjectLiteral> {
         return {...entity, ...values};
     }
 
-    async updateMany(filters: DeepPartial<Entity>, values: DeepPartial<Entity>) {
+    async updateMany(filters: FindOptionsWhere<Entity>, values: DeepPartial<Entity>) {
         return await this.repo.update(filters, values).then(value => value.affected);
     }
 
-    async delete(filters: DeepPartial<Entity>) {
+    async delete(filters: FindOptionsWhere<Entity>) {
         return await this.repo.delete(filters).then(value => value.affected ?? 0);
     }
 }

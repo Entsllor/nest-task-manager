@@ -3,7 +3,6 @@ import {UUID} from "backend-batteries";
 import {CreateTaskDto, UpdateTaskDto} from "./tasks.schemas";
 import {Task} from "./tasks.model";
 import {TasksRepository} from "./tasks.repository";
-import {DeepPartial} from "typeorm";
 
 @Injectable()
 export class TasksService {
@@ -18,7 +17,7 @@ export class TasksService {
         return this.repo.first({id: taskId});
     }
 
-    getMany(criteria?: DeepPartial<Task>): Promise<Task[]> {
+    getMany(criteria?: Partial<Task>): Promise<Task[]> {
         return this.repo.findMany(criteria);
     }
 

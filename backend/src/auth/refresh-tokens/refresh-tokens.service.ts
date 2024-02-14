@@ -6,23 +6,31 @@ import {Settings} from "../../common/settings/settings.service";
 import {addMinutes} from "date-fns";
 import {RefreshToken} from "./refresh-tokens.model";
 import {FailedToRefreshTokenForbidden} from "../auth.exceptions";
+import {IsNull} from "typeorm";
 
 @Injectable()
 export class RefreshTokensService {
     constructor(private repo: RefreshTokensRepository, private settings: Settings) {
     }
 
-    create(dto: CreateRefreshTokenDto): Promise<RefreshToken> {
+    async create(dto: CreateRefreshTokenDto): Promise<RefreshToken> {
         return this.repo.create({
-            ...dto,
+            userAgent: dto.userAgent,
+            userId: dto.userId,
+            authorIp: dto.authorIp,
             body: Buffer.from(uuid4()).toString("base64"),
             expireAt: addMinutes(new Date(), this.settings.vars.REFRESH_TOKEN_LIFETIME_IN_MINUTES),
         });
     }
 
-    revoke(body: string) {
-        return this.repo.updateOne({body}, {revokedAt: new Date()});
+    async revoke(body: string) {
+        return this.repo.updateOne({body, revokedAt: IsNull()}, {revokedAt: new Date()});
     }
+
+    async isRevoked(body: string) {
+        return this.repo.getByPk(body).then(value => !!value?.revokedAt);
+    }
+
 
     async refresh(body: string, dto: CreateRefreshTokenDto): Promise<RefreshToken> {
         const oldToken = await this.revoke(body);

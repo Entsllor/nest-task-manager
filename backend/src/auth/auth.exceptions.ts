@@ -13,7 +13,7 @@ export class NotUniqueEmail extends BadRequest {
 
 }
 
-export class NotValidELoginOrPassword {
+export class NotValidELoginOrPassword extends BadRequest {
 
 }
 

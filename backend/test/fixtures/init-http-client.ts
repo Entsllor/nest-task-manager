@@ -1,8 +1,7 @@
-import {initTestModule} from "./init-test-module";
 import * as request from "supertest";
-import {INestApplication} from "@nestjs/common";
+import {SuperTest} from "supertest";
+import {testApp} from "../setupTests";
 
-export async function initHttpClient(app?: INestApplication) {
-    app = app ?? await initTestModule();
-    return request(app.getHttpServer());
+export async function initHttpClient(): Promise<SuperTest> {
+    return request(testApp.getHttpServer()) as any;
 }
