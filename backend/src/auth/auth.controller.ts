@@ -8,12 +8,12 @@ import {AllowExpiredJwt} from "./decorators/allow-expired.jwt";
 import {JwtPayload} from "./decorators/jwt-payload.decorator";
 import {RefreshTokenBody} from "./refresh-tokens/refresh-tokens.pipe";
 import {raise} from "backend-batteries";
-import {FailedToParseClientIp, FailedToParseUserAgent} from "./auth.exceptions";
+import {FailedToParseClientIp} from "./auth.exceptions";
 import {IRequest} from "../helpers/types/util-types";
 
 import {CookiesService} from "../common/cookies/cookies.service";
 import {OpenApiSettings} from "../helpers/decorators/open-api-settings";
-import {ApiBearerAuth} from "@nestjs/swagger";
+import {ApiBearerAuth, ApiResponse} from "@nestjs/swagger";
 
 @OpenApiSettings("auth", {auth: "public"})
 @Controller("auth")
@@ -34,7 +34,7 @@ export class AuthController {
     async refresh(@RefreshTokenBody() refreshTokenBody: string, @JwtPayload() payload: IJwtPayload, @Req() req: IRequest) {
         const [refreshToken, accessToken] = await this.authService.refreshTokens(refreshTokenBody, payload, {
             authorIp: req.ip || raise(FailedToParseClientIp),
-            userAgent: req.get("User-Agent") || raise(FailedToParseUserAgent),
+            userAgent: req.get("User-Agent") || "undefined",
         });
         this.cookies.setRefreshToken(refreshToken);
         return {accessToken};
@@ -48,9 +48,17 @@ export class AuthController {
             refreshToken,
         } = await this.authService.login(loginDto.email, loginDto.password, {
             authorIp: req.ip || raise(FailedToParseClientIp),
-            userAgent: req.get("User-Agent") || raise(FailedToParseUserAgent),
+            userAgent: req.get("User-Agent") || "undefined",
         });
         this.cookies.setRefreshToken(refreshToken);
         return {accessToken};
+    }
+
+    @Post("logout")
+    @Public()
+    @ApiResponse({status: 204})
+    async logout(@RefreshTokenBody({optional: true}) refreshTokenBody: string | undefined) {
+        this.cookies.unsetRefreshToken();
+        await this.authService.revokeTokens(refreshTokenBody);
     }
 }

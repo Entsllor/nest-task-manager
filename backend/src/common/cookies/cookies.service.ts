@@ -12,7 +12,15 @@ export class CookiesService {
         this.httpAdapter.httpAdapter.setHeader(
             this.req.res,
             "Set-Cookie",
-            `refreshToken=${refreshToken.body}; Expires=${refreshToken.expireAt}; Path=/auth/refresh; Secure; SameSite=Strict; HttpOnly`,
+            `refreshToken=${refreshToken.body}; Expires=${refreshToken.expireAt}; Path=/auth/; Secure; SameSite=Strict; HttpOnly`,
+        );
+    }
+
+    unsetRefreshToken(): void {
+        this.httpAdapter.httpAdapter.setHeader(
+            this.req.res,
+            "Set-Cookie",
+            `refreshToken=undefined; Expires=${new Date(0)}; Path=/auth/; Secure; SameSite=Strict; HttpOnly`,
         );
     }
 }

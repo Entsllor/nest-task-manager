@@ -1,7 +1,7 @@
 import {INestApplication} from "@nestjs/common";
 import * as request from "supertest";
 import {Settings} from "../src/common/settings/settings.service";
-import {initTestModule} from "./fixtures/init-test-module";
+import {initTestApp} from "./fixtures/init-test-app";
 
 
 describe("AppController (e2e)", () => {
@@ -9,7 +9,7 @@ describe("AppController (e2e)", () => {
     let settings: Settings;
 
     beforeEach(async () => {
-        app = await initTestModule();
+        app = await initTestApp();
         settings = app.get(Settings);
     });
 

@@ -3,7 +3,7 @@ import {RefreshTokensService} from "./refresh-tokens.service";
 import {RefreshTokensRepository} from "./refresh-tokens.repository";
 
 @Module({
-    providers: [RefreshTokensRepository, RefreshTokensService],
+    providers: [RefreshTokensService, RefreshTokensRepository],
     exports: [RefreshTokensService],
 })
 export class RefreshTokensModule {

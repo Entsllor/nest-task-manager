@@ -31,7 +31,7 @@ export class AuthService {
         raise(NotValidELoginOrPassword);
     }
 
-    async loginAs(user: User, createRefreshTokenDto: Omit<CreateRefreshTokenDto, "userId">) {
+    private async loginAs(user: User, createRefreshTokenDto: Omit<CreateRefreshTokenDto, "userId">) {
         const payload: IJwtPayload = {
             sub: user.id,
             birthdate: user.birthdate?.toISOString(),
@@ -47,6 +47,12 @@ export class AuthService {
     async login(email: string, plainTextPassword: string, createRefreshTokenDto: Omit<CreateRefreshTokenDto, "userId">) {
         const user = await this.authByEmailAndPassword(email, plainTextPassword);
         return this.loginAs(user, createRefreshTokenDto);
+    }
+
+    async revokeTokens(refreshTokenBody: string | undefined) {
+        if (refreshTokenBody) {
+            await this.refreshTokensService.revoke(refreshTokenBody);
+        }
     }
 
     async refreshTokens(refreshTokenBody: string, jwtPayload: IJwtPayload, extraUserData: Omit<CreateRefreshTokenDto, "userId">): Promise<[RefreshToken, string]> {
