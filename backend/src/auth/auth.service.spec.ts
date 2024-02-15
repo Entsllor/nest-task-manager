@@ -14,6 +14,7 @@ import {SignupSchema} from "./users/users.schemas";
 import {expectError} from "../helpers/tests-utils/expect-error";
 import {NotValidELoginOrPassword} from "./auth.exceptions";
 import {RefreshToken} from "./refresh-tokens/refresh-tokens.model";
+import {JwtBlockList} from "./jwt/jwt.blocklist";
 
 describe("AuthService", () => {
     let service: AuthService;
@@ -28,7 +29,7 @@ describe("AuthService", () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [CommonModule, UsersModule, RefreshTokensModule, JwtModule.register({secret: "secret"})],
-            providers: [AuthService, PasswordsService, RefreshTokensService, UsersService, Settings, RefreshTokensRepository],
+            providers: [AuthService, PasswordsService, RefreshTokensService, UsersService, Settings, RefreshTokensRepository, JwtBlockList],
         }).compile();
 
         service = module.get<AuthService>(AuthService);

@@ -14,6 +14,7 @@ import {IRequest} from "../helpers/types/util-types";
 import {CookiesService} from "../common/cookies/cookies.service";
 import {OpenApiSettings} from "../helpers/decorators/open-api-settings";
 import {ApiBearerAuth, ApiResponse} from "@nestjs/swagger";
+import {AccessTokenBody} from "./jwt/jwt.pipe";
 
 @OpenApiSettings("auth", {auth: "public"})
 @Controller("auth")
@@ -57,8 +58,8 @@ export class AuthController {
     @Post("logout")
     @Public()
     @ApiResponse({status: 204})
-    async logout(@RefreshTokenBody({optional: true}) refreshTokenBody: string | undefined) {
+    async logout(@RefreshTokenBody({optional: true}) refreshTokenBody: string | undefined, @AccessTokenBody({optional: true}) accessToken: string) {
         this.cookies.unsetRefreshToken();
-        await this.authService.revokeTokens(refreshTokenBody);
+        await this.authService.revokeTokens(refreshTokenBody, accessToken);
     }
 }

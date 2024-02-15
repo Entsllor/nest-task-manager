@@ -10,6 +10,8 @@ import {PasswordsService} from "./passwords/passwords.service";
 import {RefreshTokensModule} from "./refresh-tokens/refresh-tokens.module";
 import {CurrentUserPipe} from "./decorators/current-user.pipe";
 import {ExpiredJwtStrategy} from "./jwt/expired-jwt.strategy";
+import {KeyValueStorage} from "../common/key-value-storage/key-value-storage.service";
+import {JwtBlockList} from "./jwt/jwt.blocklist";
 
 @Module({
     imports: [UsersModule, JwtModule.registerAsync({
@@ -19,7 +21,7 @@ import {ExpiredJwtStrategy} from "./jwt/expired-jwt.strategy";
             signOptions: {expiresIn: settings.vars.JWT_LIFETIME_IN_MINUTES * 60},
         }),
     }), RefreshTokensModule],
-    providers: [AuthService, PasswordsService, UsersService, CurrentUserPipe, JwtStrategy, ExpiredJwtStrategy],
+    providers: [AuthService, PasswordsService, UsersService, CurrentUserPipe, JwtStrategy, ExpiredJwtStrategy, KeyValueStorage, JwtBlockList],
     controllers: [AuthController],
 })
 export class AuthModule {

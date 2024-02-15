@@ -9,6 +9,7 @@ import {RefreshTokensService} from "./refresh-tokens/refresh-tokens.service";
 import {pick} from "radash";
 import {CreateRefreshTokenDto} from "./refresh-tokens/refresh-tokens.schemas";
 import {RefreshToken} from "./refresh-tokens/refresh-tokens.model";
+import {JwtBlockList} from "./jwt/jwt.blocklist";
 
 export type IJwtPayload = {
     sub: string;
@@ -20,7 +21,7 @@ export type IJwtPayload = {
 
 @Injectable()
 export class AuthService {
-    constructor(private usersService: UsersService, private jwtService: JwtService, private passwordsService: PasswordsService, private refreshTokensService: RefreshTokensService) {
+    constructor(private usersService: UsersService, private jwtService: JwtService, private passwordsService: PasswordsService, private refreshTokensService: RefreshTokensService, private jwtBlockList: JwtBlockList) {
     }
 
     async authByEmailAndPassword(email: string, plainTextPassword: string): Promise<User> {
@@ -49,9 +50,12 @@ export class AuthService {
         return this.loginAs(user, createRefreshTokenDto);
     }
 
-    async revokeTokens(refreshTokenBody: string | undefined) {
+    async revokeTokens(refreshTokenBody: string | undefined, accessToken: string | undefined) {
         if (refreshTokenBody) {
             await this.refreshTokensService.revoke(refreshTokenBody);
+        }
+        if (accessToken) {
+            await this.jwtBlockList.set(accessToken);
         }
     }
 
