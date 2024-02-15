@@ -11,6 +11,17 @@ services:
       POSTGRES_DB: ${DB_NAME}
       PGPORT: ${DB_PORT}
 
+
+  redis:
+    ports:
+      - "${REDIS_PORT}:6379"
+    image: "redis:7.0.0-alpine"
+    restart: always
+    environment:
+      - REDIS_DATABASES=16
+    networks:
+      - app.network
+
 networks:
   app.network:
     driver: bridge

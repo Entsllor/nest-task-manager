@@ -52,18 +52,20 @@ describe("users", () => {
         });
     });
 
-    describe('logout', () => {
+    describe("logout", () => {
         it("should remove refresh token from cookies", async () => {
+            await userClient.get("/users/me").expect(200);
             const response = await userClient.post("/auth/logout").send().expect(201);
             expect(response.headers["set-cookie"][0]).toContain("refreshToken=undefined");
             await userClient.post("/auth/refresh").send().expect(403);
+            await userClient.get("/users/me").expect(401);
         });
 
         it("should be ok if have not refresh token", async () => {
-            const response = await userClient.post("/auth/logout").set('Cookie', []).send().expect(201);
+            const response = await userClient.post("/auth/logout").set("Cookie", []).send().expect(201);
             expect(response.headers["set-cookie"][0]).toContain("refreshToken=undefined");
         });
-    })
+    });
 
     describe("refresh", () => {
         it("should refresh tokens", async () => {

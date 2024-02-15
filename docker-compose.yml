@@ -1,7 +1,8 @@
-version: '3.4'
+version: '3.8'
 services:
   # database
   db:
+    restart: always
     env_file:
       - .env
     image: "postgres:16.1-alpine"
@@ -21,6 +22,18 @@ services:
     networks:
       - app.network
 
+  redis:
+    image: "redis:7.0.0-alpine"
+    restart: always
+    environment:
+      - REDIS_PASSWORD=${REDIS_PASSWORD}
+      - REDIS_PORT=${REDIS_PORT}
+      - REDIS_DATABASES=16
+    volumes:
+      - redis.volume:/data
+    networks:
+      - app.network
+
   backend:
     env_file: .env
     build:
@@ -28,10 +41,13 @@ services:
       dockerfile: Dockerfile
       target: production
     depends_on:
+      redis:
+        condition: service_started
       db:
         condition: service_healthy
     environment:
       DB_HOST: db
+      REDIS_HOST: redis
     networks:
       - app.network
 
@@ -52,6 +68,7 @@ services:
 
 volumes:
   db.volume:
+  redis.volume:
 networks:
   app.network:
     driver: bridge
