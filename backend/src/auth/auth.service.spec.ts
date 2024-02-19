@@ -13,7 +13,7 @@ import {generateMock} from "@anatine/zod-mock";
 import {SignupSchema} from "./users/users.schemas";
 import {expectError} from "../helpers/tests-utils/expect-error";
 import {NotValidELoginOrPassword} from "./auth.exceptions";
-import {RefreshToken} from "./refresh-tokens/refresh-tokens.model";
+import {RefreshToken} from "./refresh-tokens/refresh-tokens.enity";
 import {JwtBlockList} from "./jwt/jwt.blocklist";
 
 describe("AuthService", () => {

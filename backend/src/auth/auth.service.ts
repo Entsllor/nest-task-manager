@@ -1,14 +1,14 @@
 import {Injectable} from "@nestjs/common";
 import {UsersService} from "./users/users.service";
 import {JwtService} from "@nestjs/jwt";
-import {User} from "./users/users.model";
+import {User} from "./users/users.entity";
 import {PasswordsService} from "./passwords/passwords.service";
 import {raise} from "backend-batteries";
 import {NotValidELoginOrPassword} from "./auth.exceptions";
 import {RefreshTokensService} from "./refresh-tokens/refresh-tokens.service";
 import {pick} from "radash";
 import {CreateRefreshTokenDto} from "./refresh-tokens/refresh-tokens.schemas";
-import {RefreshToken} from "./refresh-tokens/refresh-tokens.model";
+import {RefreshToken} from "./refresh-tokens/refresh-tokens.enity";
 import {JwtBlockList} from "./jwt/jwt.blocklist";
 
 export type IJwtPayload = {

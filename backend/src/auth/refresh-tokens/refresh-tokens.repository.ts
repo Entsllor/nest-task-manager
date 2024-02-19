@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {BaseRepository} from "../../helpers/db/base-repository";
-import {RefreshToken} from "./refresh-tokens.model";
+import {RefreshToken} from "./refresh-tokens.enity";
 import {DataSource} from "typeorm";
 import {ClsService} from "nestjs-cls";
 

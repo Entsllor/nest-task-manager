@@ -4,7 +4,7 @@ import {CreateRefreshTokenDto} from "./refresh-tokens.schemas";
 import {raise, uuid4} from "backend-batteries";
 import {Settings} from "../../common/settings/settings.service";
 import {addMinutes} from "date-fns";
-import {RefreshToken} from "./refresh-tokens.model";
+import {RefreshToken} from "./refresh-tokens.enity";
 import {FailedToRefreshTokenForbidden} from "../auth.exceptions";
 import {IsNull} from "typeorm";
 

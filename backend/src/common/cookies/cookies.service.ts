@@ -1,6 +1,6 @@
 import {Inject, Injectable} from "@nestjs/common";
 import {HttpAdapterHost, REQUEST} from "@nestjs/core";
-import {RefreshToken} from "../../auth/refresh-tokens/refresh-tokens.model";
+import {RefreshToken} from "../../auth/refresh-tokens/refresh-tokens.enity";
 import {IRequest} from "../../helpers/types/util-types";
 
 @Injectable()

@@ -4,7 +4,7 @@ import {SignupDto} from "./users.schemas";
 import {raise, UUID} from "backend-batteries";
 import {NotUniqueEmail, NotUniqueUsername} from "../auth.exceptions";
 import {DeepPartial} from "typeorm";
-import {User} from "./users.model";
+import {User} from "./users.entity";
 import {PasswordsService} from "../passwords/passwords.service";
 
 @Injectable()
