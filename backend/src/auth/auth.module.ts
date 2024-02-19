@@ -23,6 +23,7 @@ import {JwtBlockList} from "./jwt/jwt.blocklist";
     }), RefreshTokensModule],
     providers: [AuthService, PasswordsService, UsersService, CurrentUserPipe, JwtStrategy, ExpiredJwtStrategy, KeyValueStorage, JwtBlockList],
     controllers: [AuthController],
+    exports: [PasswordsService]
 })
 export class AuthModule {
 }

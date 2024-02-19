@@ -32,7 +32,7 @@ export class UsersService {
     }
 
     findByEmail(email: string) {
-        return this.repo.first({email})
+        return this.repo.first({email});
     }
 
     update(id: UUID, data: DeepPartial<User>) {

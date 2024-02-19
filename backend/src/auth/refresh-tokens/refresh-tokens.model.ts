@@ -9,7 +9,7 @@ export class RefreshToken {
     @ManyToOne("User", (user: User) => user.refreshTokens, {onDelete: "CASCADE"})
     user: User;
 
-    @Column()
+    @Column({type: "uuid"})
     userId: string;
 
     @CreateDateColumn({type: "timestamptz"})

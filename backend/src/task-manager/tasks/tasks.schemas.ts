@@ -18,7 +18,7 @@ export const UpdateTaskSchema = CreateTaskSchema.partial().extend({});
 export class UpdateTaskDto extends createZodDto(UpdateTaskSchema) {
 }
 
-export const TaskSchema = CreateTaskSchema.extend({id: z.string().uuid()});
+export const TaskSchema = CreateTaskSchema.extend({id: z.string().uuid(), authorId: z.string().uuid()});
 
 export class TaskSearchDto extends createZodDto(TaskSchema.partial()) {
 }

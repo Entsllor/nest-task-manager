@@ -6,21 +6,27 @@ import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
 import {CommonModule} from "../../common/common.module";
 import {TasksRepository} from "./tasks.repository";
+import {User} from "../../auth/users/users.model";
+import {initTestUser} from "../../../test/fixtures/init-test-user";
+import {UsersModule} from "../../auth/users/users.module";
+import {AuthModule} from "../../auth/auth.module";
 
 describe("TasksService", () => {
     let service: TasksService;
+    let user: User;
 
     async function createTask() {
-        return service.create(generateMock(CreateTaskSchema));
+        return service.create(generateMock(CreateTaskSchema), user.id);
     }
 
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
-            providers: [TasksRepository, TasksService],
-            imports: [CommonModule],
+            providers: [TasksRepository, TasksService, AuthModule],
+            imports: [CommonModule, UsersModule],
         }).compile();
 
         service = module.get<TasksService>(TasksService);
+        user = await initTestUser(module);
     });
 
     it("should be defined", () => {

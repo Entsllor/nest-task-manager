@@ -1,5 +1,6 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {RefreshToken} from "../refresh-tokens/refresh-tokens.model";
+import {Task} from "../../task-manager/tasks/tasks.model";
 
 @Entity({})
 export class User {
@@ -35,4 +36,7 @@ export class User {
 
     @OneToMany(() => RefreshToken, object => object.user)
     refreshTokens: RefreshToken[];
+
+    @OneToMany(() => Task, object => object.author)
+    tasks: Task[];
 }
