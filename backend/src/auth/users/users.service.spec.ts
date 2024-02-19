@@ -5,7 +5,7 @@ import {CommonModule} from "../../common/common.module";
 import {PasswordsService} from "../passwords/passwords.service";
 import {generateMock} from "@anatine/zod-mock";
 import {SignupSchema} from "./users.schemas";
-import {User} from "./users.model";
+import {User} from "./users.entity";
 import {expectError} from "../../helpers/tests-utils/expect-error";
 import {NotUniqueEmail, NotUniqueUsername} from "../auth.exceptions";
 import {DummyPasswordsService} from "../passwords/dummy.passwords.service";

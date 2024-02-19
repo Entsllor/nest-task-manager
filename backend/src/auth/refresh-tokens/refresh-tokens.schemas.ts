@@ -1,6 +1,6 @@
 import {z} from "nestjs-zod/z";
 import {createZodDto} from "nestjs-zod";
-import {RefreshToken} from "./refresh-tokens.model";
+import {RefreshToken} from "./refresh-tokens.enity";
 import {Maybe} from "../../helpers/validation/maybe";
 
 const RefreshTokenSchema = z.object({

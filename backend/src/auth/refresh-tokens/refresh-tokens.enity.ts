@@ -1,12 +1,12 @@
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn} from "typeorm";
-import {User} from "../users/users.model";
+import {User} from "../users/users.entity";
 
 @Entity({})
 export class RefreshToken {
     @PrimaryColumn({length: 63})
     body: string;
 
-    @ManyToOne("User", (user: User) => user.refreshTokens, {onDelete: "CASCADE"})
+    @ManyToOne("User", {onDelete: "CASCADE"})
     user: User;
 
     @Column({type: "uuid"})

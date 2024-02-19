@@ -5,7 +5,7 @@ import {PrivateUserDto, PublicUserDto, UpdateUserDto} from "./users.schemas";
 import {UserNotFound} from "../auth.exceptions";
 import {ParseResponse} from "../../helpers/decorators/parse-response";
 import {CurrentUser} from "../decorators/current-user.pipe";
-import {User} from "./users.model";
+import {User} from "./users.entity";
 import {OpenApiSettings} from "../../helpers/decorators/open-api-settings";
 
 @OpenApiSettings("users")

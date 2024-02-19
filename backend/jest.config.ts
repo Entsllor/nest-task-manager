@@ -19,5 +19,6 @@ export default async (): Promise<Config> => ({
     ],
     "coverageDirectory": "../coverage",
     "testEnvironment": "node",
-    'testTimeout': 100000
+    "testTimeout": 100000,
+    moduleDirectories: ["node_modules", "src"],
 });

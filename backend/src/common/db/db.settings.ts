@@ -1,5 +1,11 @@
 import {AppMode, ISettings} from "../settings/settings.types";
 import {DataSourceOptions} from "typeorm";
+import {Task} from "../../task-manager/tasks/tasks.entity";
+import {User} from "../../auth/users/users.entity";
+import {RefreshToken} from "../../auth/refresh-tokens/refresh-tokens.enity";
+import {TeamMember} from "../../teams/team-members/team-members.entity";
+import {Team} from "../../teams/teams.entity";
+import {Board} from "../../task-manager/boards/boards.entity";
 
 export function getDbSettings(envVars: ISettings): DataSourceOptions {
     return {
@@ -10,7 +16,7 @@ export function getDbSettings(envVars: ISettings): DataSourceOptions {
         password: envVars.DB_PASSWORD,
         database: envVars.DB_NAME,
         logging: envVars.NODE_ENV === AppMode.development,
-        entities: ["src/**/*.model.{js,ts}"],
+        entities: [Task, User, RefreshToken, TeamMember, Team, Board],
         migrations: ["migrations/*.{js,ts}"],
         subscribers: [],
         useUTC: true,
