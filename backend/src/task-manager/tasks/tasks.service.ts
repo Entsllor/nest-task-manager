@@ -9,8 +9,8 @@ export class TasksService {
     constructor(private repo: TasksRepository) {
     }
 
-    async create(createTaskDto: CreateTaskDto): Promise<Task> {
-        return this.repo.create(createTaskDto);
+    async create(createTaskDto: CreateTaskDto, userId: UUID): Promise<Task> {
+        return this.repo.create({...createTaskDto, authorId: userId});
     }
 
     getOne(taskId: UUID) {

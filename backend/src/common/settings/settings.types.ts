@@ -22,6 +22,8 @@ export const configSchema = zod.object({
     DB_PASSWORD: zod.string(),
     DB_LOGGING: zod.coerce.boolean().default(false),
 
+    PASSWORD_SALT_OR_ROUNDS: zod.coerce.number().default(12),
+
     REDIS_PORT: zod.coerce.number(),
     REDIS_HOST: zod.string().default("localhost"),
     REDIS_DB: zod.coerce.number().default(5),

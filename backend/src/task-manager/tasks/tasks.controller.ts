@@ -1,11 +1,12 @@
-import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put, Query} from "@nestjs/common";
+import {Body, Controller, Delete, Get, Param, ParseUUIDPipe, Post, Put} from "@nestjs/common";
 import {raise, UUID} from "backend-batteries";
 import {TasksService} from "./tasks.service";
-import {CreateTaskDto, TaskDto, TaskSearchDto, UpdateTaskDto} from "./tasks.schemas";
+import {CreateTaskDto, TaskDto, UpdateTaskDto} from "./tasks.schemas";
 import {TaskNotFound} from "../task-manager.exceptions";
 import {ParseResponse} from "../../helpers/decorators/parse-response";
 import {EmptyResponse} from "../../helpers/decorators/empty-response";
 import {OpenApiSettings} from "../../helpers/decorators/open-api-settings";
+import {UserId} from "../../auth/decorators/user-id.decorator";
 
 @OpenApiSettings("tasks")
 @Controller("tasks")
@@ -15,14 +16,14 @@ export class TasksController {
 
     @Post()
     @ParseResponse({type: TaskDto})
-    create(@Body() body: CreateTaskDto) {
-        return this.tasksService.create(body);
+    create(@Body() body: CreateTaskDto, @UserId() userId: UUID) {
+        return this.tasksService.create(body, userId);
     }
 
     @Get()
     @ParseResponse({type: TaskDto, isArray: true})
-    getMany(@Query() query?: TaskSearchDto) {
-        return this.tasksService.getMany(query);
+    getMany(@UserId() userId: UUID) {
+        return this.tasksService.getMany({authorId: userId});
     }
 
     @Get(":id")
