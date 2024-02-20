@@ -8,10 +8,10 @@ import {faker} from "@faker-js/faker";
 import {TaskNotFound} from "../task-manager.exceptions";
 import {expectError} from "../../helpers/tests-utils/expect-error";
 import {expectSchema} from "../../helpers/tests-utils/expect-schema";
-import {Task} from "./tasks.model";
+import {Task} from "./tasks.entity";
 import {CommonModule} from "../../common/common.module";
 import {TasksRepository} from "./tasks.repository";
-import {User} from "../../auth/users/users.model";
+import {User} from "../../auth/users/users.entity";
 import {initTestUser} from "../../../test/fixtures/init-test-user";
 import {AuthModule} from "../../auth/auth.module";
 

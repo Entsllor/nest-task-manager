@@ -1,7 +1,7 @@
 import {Injectable} from "@nestjs/common";
 import {UUID} from "backend-batteries";
 import {CreateTaskDto, UpdateTaskDto} from "./tasks.schemas";
-import {Task} from "./tasks.model";
+import {Task} from "./tasks.entity";
 import {TasksRepository} from "./tasks.repository";
 
 @Injectable()
