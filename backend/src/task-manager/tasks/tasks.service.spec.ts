@@ -6,7 +6,7 @@ import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
 import {CommonModule} from "../../common/common.module";
 import {TasksRepository} from "./tasks.repository";
-import {User} from "../../auth/users/users.model";
+import {User} from "../../auth/users/users.entity";
 import {initTestUser} from "../../../test/fixtures/init-test-user";
 import {UsersModule} from "../../auth/users/users.module";
 import {AuthModule} from "../../auth/auth.module";

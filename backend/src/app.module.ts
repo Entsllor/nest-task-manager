@@ -8,9 +8,10 @@ import {TransactionsInterceptor} from "./common/db/db.transactions.interceptor";
 import {UsersModule} from "./auth/users/users.module";
 import {AuthModule} from "./auth/auth.module";
 import {JwtAuthGuard} from "./auth/jwt/jwt-auth.guard";
+import {TeamsModule} from "./teams/teams.module";
 
 @Module({
-    imports: [CommonModule, TaskManagerModule, UsersModule, AuthModule],
+    imports: [CommonModule, TaskManagerModule, UsersModule, AuthModule, TeamsModule],
     controllers: [AppController],
     providers: [
         AppService,
