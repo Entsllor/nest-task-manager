@@ -13,13 +13,18 @@ describe("users", () => {
 
     describe("read-users", () => {
         it("should return users", async () => {
-            await userClient.get("/users/").expect(200).expect(doSatisfies(PublicUserSchema.array())).expect(doNotSatisfies(PrivateUserSchema.array()));
+            await userClient.get("/users/")
+                .expect(200)
+                .expect(doSatisfies(PublicUserSchema.array()))
+                .expect(doNotSatisfies(PrivateUserSchema.array()));
         });
     });
 
     describe("read-me", () => {
         it("should return me", async () => {
-            await userClient.get("/users/me").expect(200).expect(doSatisfies(PrivateUserSchema));
+            await userClient.get("/users/me")
+                .expect(200)
+                .expect(doSatisfies(PrivateUserSchema));
         });
     });
 });

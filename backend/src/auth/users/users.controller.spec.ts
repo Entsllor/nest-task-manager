@@ -8,7 +8,6 @@ import {generateMock} from "@anatine/zod-mock";
 import {SignupSchema} from "./users.schemas";
 import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
-import {DummyPasswordsService} from "../passwords/dummy.passwords.service";
 import {expectError} from "../../helpers/tests-utils/expect-error";
 import {UserNotFound} from "../auth.exceptions";
 
@@ -21,7 +20,7 @@ describe("UsersController", () => {
         const module: TestingModule = await Test.createTestingModule({
             controllers: [UsersController],
             imports: [CommonModule],
-            providers: [UsersService, UsersRepository, {provide: PasswordsService, useClass: DummyPasswordsService}],
+            providers: [UsersService, UsersRepository, PasswordsService],
         }).compile();
 
         repo = module.get(UsersRepository);

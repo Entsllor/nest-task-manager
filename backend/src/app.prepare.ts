@@ -1,6 +1,6 @@
 import {INestApplication} from "@nestjs/common";
-import {ISettings} from "./common/settings/settings.types";
-import * as cookieParser from "cookie-parser";
+import {ISettings} from "./common/settings/settings.schemas";
+import cookieParser from "cookie-parser";
 import {HttpAdapterHost} from "@nestjs/core";
 import {AllExceptionsFilter} from "./helpers/exceptions/all-exceptions.filter";
 import {AppExceptionsFilter} from "./helpers/exceptions/app-exceptions.filter";

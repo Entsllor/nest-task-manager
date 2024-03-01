@@ -6,10 +6,11 @@ import {IRequest} from "../../helpers/types/util-types";
 import {JwtBlockList} from "./jwt.blocklist";
 import {raise} from "backend-batteries";
 import {getAccessTokenFromRequest} from "./jwt.helpers";
+import {ClsService} from "nestjs-cls";
 
 @Injectable()
 export class JwtStrategy extends PassportStrategy(Strategy) {
-    constructor(settings: Settings, private jwtBlockList: JwtBlockList) {
+    constructor(settings: Settings, private jwtBlockList: JwtBlockList, private cls: ClsService) {
         super({
             jwtFromRequest: ExtractJwt.fromAuthHeaderAsBearerToken(),
             ignoreExpiration: false,
@@ -23,6 +24,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
         if (jwt && await this.jwtBlockList.has(jwt)) {
             raise(UnauthorizedException);
         }
+        this.cls.set('userId', payload.sub)
         return {...payload};
     }
 }

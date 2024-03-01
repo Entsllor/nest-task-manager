@@ -1,5 +1,5 @@
 import {INestApplication} from "@nestjs/common";
-import * as request from "supertest";
+import request from "supertest";
 import {Settings} from "../src/common/settings/settings.service";
 import {initTestApp} from "./fixtures/init-test-app";
 

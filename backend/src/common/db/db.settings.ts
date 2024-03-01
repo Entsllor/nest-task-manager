@@ -1,4 +1,4 @@
-import {AppMode, ISettings} from "../settings/settings.types";
+import {AppMode, ISettings} from "../settings/settings.schemas";
 import {DataSourceOptions} from "typeorm";
 import {Task} from "../../task-manager/tasks/tasks.entity";
 import {User} from "../../auth/users/users.entity";

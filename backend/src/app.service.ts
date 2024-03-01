@@ -1,6 +1,6 @@
 import {Injectable} from "@nestjs/common";
 import {pick} from "radash";
-import {AppMode} from "./common/settings/settings.types";
+import {AppMode} from "./common/settings/settings.schemas";
 import {Settings} from "./common/settings/settings.service";
 
 @Injectable()

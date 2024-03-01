@@ -1,18 +1,22 @@
-import { Test, TestingModule } from '@nestjs/testing';
-import { TeamsService } from './teams.service';
+import {Test, TestingModule} from "@nestjs/testing";
+import {TeamsService} from "./teams.service";
+import {TeamsRepository} from "./teams.repository";
+import {CommonModule} from "../common/common.module";
+import {TeamMembersModule} from "./team-members/team-members.module";
 
-describe('TeamsService', () => {
-  let service: TeamsService;
+describe("TeamsService", () => {
+    let service: TeamsService;
 
-  beforeEach(async () => {
-    const module: TestingModule = await Test.createTestingModule({
-      providers: [TeamsService],
-    }).compile();
+    beforeEach(async () => {
+        const module: TestingModule = await Test.createTestingModule({
+            providers: [TeamsService, TeamsRepository],
+            imports: [CommonModule, TeamMembersModule],
+        }).compile();
 
-    service = module.get<TeamsService>(TeamsService);
-  });
+        service = module.get<TeamsService>(TeamsService);
+    });
 
-  it('should be defined', () => {
-    expect(service).toBeDefined();
-  });
+    it("should be defined", () => {
+        expect(service).toBeDefined();
+    });
 });

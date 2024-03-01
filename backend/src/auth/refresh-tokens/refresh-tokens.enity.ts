@@ -1,16 +1,17 @@
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryColumn} from "typeorm";
-import {User} from "../users/users.entity";
+import type {User} from "../users/users.entity";
+import {ForeignId, Pk} from "../../helpers/types/entity-types";
 
 @Entity({})
 export class RefreshToken {
-    @PrimaryColumn({length: 63})
-    body: string;
+    @PrimaryColumn("varchar", {length: 63})
+    body: Pk<string>;
 
     @ManyToOne("User", {onDelete: "CASCADE"})
     user: User;
 
     @Column({type: "uuid"})
-    userId: string;
+    userId: ForeignId<User>;
 
     @CreateDateColumn({type: "timestamptz"})
     createdAt: Date;

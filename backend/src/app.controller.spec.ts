@@ -2,7 +2,7 @@ import {Test, TestingModule} from "@nestjs/testing";
 import {AppController} from "./app.controller";
 import {AppService} from "./app.service";
 import {ConfigModule} from "@nestjs/config";
-import {configSchema} from "./common/settings/settings.types";
+import {configSchema} from "./common/settings/settings.schemas";
 import {Settings} from "./common/settings/settings.service";
 
 describe("AppController", () => {

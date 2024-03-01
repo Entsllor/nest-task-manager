@@ -1,10 +1,11 @@
 import {Column, CreateDateColumn, Entity, OneToMany, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
-import {Task} from "../../task-manager/tasks/tasks.entity";
+import type {Task} from "../../task-manager/tasks/tasks.entity";
+import {Pk} from "../../helpers/types/entity-types";
 
 @Entity({})
 export class User {
     @PrimaryGeneratedColumn("uuid")
-    id: string;
+    id: Pk<string>;
 
     @Column({length: 63, unique: true})
     username: string;
@@ -33,6 +34,6 @@ export class User {
     @UpdateDateColumn({type: "timestamptz"})
     updatedAt: Date;
 
-    @OneToMany(() => Task, object => object.author)
+    @OneToMany("Task", (object: Task) => object.author)
     tasks: Task[];
 }
