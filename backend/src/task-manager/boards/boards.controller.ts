@@ -1,4 +1,4 @@
-import {Body, Controller, Delete, Get, Param, ParseIntPipe, Post, Put} from "@nestjs/common";
+import {Body, Controller, Delete, Get, HttpCode, Param, ParseIntPipe, Post, Put} from "@nestjs/common";
 import {BoardsService} from "./boards.service";
 import {BoardDto, CreateBoardDto, UpdateBoardDto} from "./boards.schemas";
 import {OpenApiSettings} from "helpers/decorators/open-api-settings";
@@ -15,31 +15,31 @@ export class BoardsController {
 
     @Post()
     @ParseResponse({type: BoardDto})
-    create(@Body() createBoardDto: CreateBoardDto, @UserId() userId: UUID) {
+    async create(@Body() createBoardDto: CreateBoardDto, @UserId() userId: UUID) {
         return this.boardsService.create(createBoardDto, userId);
     }
 
     @Get()
     @ParseResponse({type: BoardDto, isArray: true})
-    findAll() {
-        return this.boardsService.findAll();
+    async findAll(@UserId() userId: UUID) {
+        return this.boardsService.findAll({}, userId);
     }
 
     @Get(":id")
     @ParseResponse({type: BoardDto})
-    findOne(@Param("id", ParseIntPipe) id: number) {
-        return this.boardsService.findOne({id: +id});
+    async findOne(@Param("id", ParseIntPipe) id: number, @UserId() userId: UUID) {
+        return this.boardsService.findOne(+id, userId);
     }
 
     @Put(":id")
     @ApiResponse({status: 204})
-    update(@Param("id", ParseIntPipe) id: number, @Body() updateBoardDto: UpdateBoardDto) {
-        return this.boardsService.update(+id, updateBoardDto);
+    async update(@Param("id", ParseIntPipe) id: number, @Body() updateBoardDto: UpdateBoardDto, @UserId() userId: UUID) {
+        return this.boardsService.update(+id, updateBoardDto, userId);
     }
 
     @Delete(":id")
-    @ApiResponse({status: 204})
-    remove(@Param("id", ParseIntPipe) id: number) {
-        return this.boardsService.remove(+id);
+    @HttpCode(204)
+    async remove(@Param("id", ParseIntPipe) id: number, @UserId() userId: UUID) {
+        await this.boardsService.remove(+id, userId);
     }
 }

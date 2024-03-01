@@ -8,6 +8,7 @@ import {TeamsRepository} from "./teams.repository";
     controllers: [TeamsController],
     providers: [TeamsService, TeamsRepository],
     imports: [TeamMembersModule],
+    exports: [TeamsService, TeamsRepository, TeamMembersModule],
 })
 export class TeamsModule {
 }

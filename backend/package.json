@@ -82,6 +82,8 @@
     "ts-loader": "^9.4.3",
     "ts-node": "^10.9.1",
     "tsconfig-paths": "^4.2.0",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "@swc/core": "^1.4.2",
+    "@swc/jest": "^0.2.36"
   }
 }

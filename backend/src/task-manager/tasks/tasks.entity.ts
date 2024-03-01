@@ -1,12 +1,14 @@
 import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn, UpdateDateColumn} from "typeorm";
 import {User} from "../../auth/users/users.entity";
 import {Board} from "../boards/boards.entity";
+import {ForeignId, Pk} from "../../helpers/types/entity-types";
+import {UUID} from "backend-batteries";
 
 
 @Entity({})
 export class Task {
     @PrimaryGeneratedColumn("uuid")
-    id: string;
+    id: Pk<UUID>;
 
     @Column({length: 63})
     title: string;
@@ -24,7 +26,7 @@ export class Task {
     author: User;
 
     @Column({type: "uuid"})
-    authorId: User["id"];
+    authorId!: ForeignId<User>;
 
     @CreateDateColumn({type: "timestamptz"})
     createdAt: Date;
@@ -36,14 +38,14 @@ export class Task {
     board: Board;
 
     @Column()
-    boardId: Board["id"];
+    boardId: ForeignId<Board>;
 
-    @Column()
+    @Column({default: false, nullable: false})
     isCompleted: boolean;
 
     @ManyToOne("User", {onDelete: "SET NULL", nullable: true})
     completedByUser?: User;
 
-    @Column()
-    completedByUserId?: User["id"];
+    @Column({nullable: true})
+    completedByUserId?: ForeignId<User>;
 }

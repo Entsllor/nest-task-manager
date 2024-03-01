@@ -9,16 +9,17 @@ import {
 } from "typeorm";
 import {ClsService} from "nestjs-cls";
 import {QUERY_MANAGER_KEY} from "../../common/db/db.transactions.interceptor";
+import {PrimaryKeysOf} from "../types/entity-types";
+
 
 export abstract class BaseRepository<Entity extends ObjectLiteral> {
     abstract model: EntityTarget<Entity>;
     readonly idFieldName: string = "id";
 
-
-    constructor(private dataSource: DataSource, private cls: ClsService) {
+    constructor(protected dataSource: DataSource, private cls: ClsService) {
     }
 
-    abstract getByPk(id: any, ...extraPrimaryKeys: any[]): Promise<Entity | null>
+    abstract getByPk(id: string | number | Date | symbol, ...extraPrimaryKeys: any[]): Promise<Entity | null>
 
     private initRepo(): Repository<Entity> {
         return ((this.cls?.get(QUERY_MANAGER_KEY) as EntityManager | undefined) ?? this.dataSource).getRepository(this.model);
@@ -28,12 +29,27 @@ export abstract class BaseRepository<Entity extends ObjectLiteral> {
         return this.initRepo();
     }
 
-    first(criteria?: FindOptionsWhere<Entity>) {
+
+    async get(criteria: Entity): Promise<Entity>
+    async get(criteria: PrimaryKeysOf<Entity>): Promise<Entity | null>
+    async get(criteria: PrimaryKeysOf<Entity> | Entity): Promise<Entity | null> {
+        if (criteria instanceof (this.model as new () => Entity)) {
+            return criteria;
+        }
+        return this.findOne(criteria as FindOptionsWhere<Entity>);
+    }
+
+    findOne(criteria?: FindOptionsWhere<Entity>) {
         return this.repo.findOneBy(criteria ?? {});
     }
 
     findMany(criteria?: FindOptionsWhere<Entity>) {
         return this.repo.findBy(criteria ?? {});
+    }
+
+    async bulkCreate(entitiesData: DeepPartial<Entity>[]): Promise<Entity[]> {
+        const entities = entitiesData.map(this.repo.create);
+        return this.repo.insert(entities).then(result => result.generatedMaps as Entity[]);
     }
 
     create(entityData: DeepPartial<Entity>) {

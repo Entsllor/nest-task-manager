@@ -1,11 +1,12 @@
-import {Column, CreateDateColumn, Entity, ManyToOne, PrimaryGeneratedColumn} from "typeorm";
-import {User} from "../auth/users/users.entity";
-import {UUID} from "backend-batteries";
+import {Column, CreateDateColumn, Entity, ManyToOne, OneToMany, PrimaryGeneratedColumn} from "typeorm";
+import type {User} from "../auth/users/users.entity";
+import type {TeamMember} from "./team-members/team-members.entity";
+import {ForeignKey, Pk} from "../helpers/types/entity-types";
 
 @Entity()
 export class Team {
     @PrimaryGeneratedColumn()
-    id: number;
+    id: Pk<number>;
 
     @CreateDateColumn({type: "timestamptz"})
     createdAt: Date;
@@ -16,10 +17,12 @@ export class Team {
     @Column({nullable: true})
     description?: string;
 
-    @ManyToOne(() => User, {onDelete: "SET NULL", nullable: true})
+    @ManyToOne("User", {onDelete: "SET NULL", nullable: true})
     author: User;
 
     @Column({nullable: true})
-    authorId?: UUID;
+    authorId?: ForeignKey<User, "id">;
 
+    @OneToMany("TeamMember", (obj: TeamMember) => obj.team)
+    members: TeamMember[];
 }

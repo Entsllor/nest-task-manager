@@ -12,7 +12,7 @@ export class TeamsRepository extends BaseRepository<Team> {
         super(dataSource, cls);
     }
 
-    getByPk(id: Team["id"]): Promise<Team | null> {
+    async getByPk(id: Team["id"]): Promise<Team | null> {
         return this.repo.findOneBy({id});
     }
 }

@@ -12,12 +12,12 @@ const CreateBoardSchema = z.object({
 export class CreateBoardDto extends createZodDto(CreateBoardSchema) {
 }
 
-const UpdateBoardSchema = CreateBoardSchema.partial();
+const UpdateBoardSchema = CreateBoardSchema.partial().omit({teamId: true});
 
 export class UpdateBoardDto extends createZodDto(UpdateBoardSchema) {
 }
 
-const BoardSchema = CreateBoardSchema.extend({
+export const BoardSchema = CreateBoardSchema.extend({
     id: z.number(),
     authorId: Maybe(z.string().uuid()),
 });

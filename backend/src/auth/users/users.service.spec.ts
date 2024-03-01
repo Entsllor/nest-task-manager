@@ -8,7 +8,6 @@ import {SignupSchema} from "./users.schemas";
 import {User} from "./users.entity";
 import {expectError} from "../../helpers/tests-utils/expect-error";
 import {NotUniqueEmail, NotUniqueUsername} from "../auth.exceptions";
-import {DummyPasswordsService} from "../passwords/dummy.passwords.service";
 import {IPasswordsService} from "../passwords/passwords.types";
 import {uuid4} from "backend-batteries";
 import {faker} from "@faker-js/faker";
@@ -24,7 +23,7 @@ describe("UsersService", () => {
     beforeEach(async () => {
         const module: TestingModule = await Test.createTestingModule({
             imports: [CommonModule],
-            providers: [UsersService, UsersRepository, {provide: PasswordsService, useClass: DummyPasswordsService}],
+            providers: [UsersService, UsersRepository, PasswordsService],
         }).compile();
 
         service = module.get(UsersService);
@@ -71,7 +70,7 @@ describe("UsersService", () => {
     describe("find one", () => {
         it("should find one", async () => {
             const user = await createUser();
-            spyOn(repo, "first").mockImplementation(() => Promise.resolve(user));
+            spyOn(repo, "findOne").mockImplementation(() => Promise.resolve(user));
             expect(await service.findOne(user.id)).toEqual(user);
         });
     });

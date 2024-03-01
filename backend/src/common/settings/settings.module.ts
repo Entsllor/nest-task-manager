@@ -1,7 +1,7 @@
 import {Module} from "@nestjs/common";
 import {Settings} from "./settings.service";
 import {ConfigModule} from "@nestjs/config";
-import {AppMode, configSchema} from "./settings.types";
+import {AppMode, configSchema} from "./settings.schemas";
 
 
 @Module({
