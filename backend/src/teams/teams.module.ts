@@ -5,10 +5,10 @@ import {TeamMembersModule} from "./team-members/team-members.module";
 import {TeamsRepository} from "./teams.repository";
 
 @Module({
-    controllers: [TeamsController],
-    providers: [TeamsService, TeamsRepository],
     imports: [TeamMembersModule],
-    exports: [TeamsService, TeamsRepository, TeamMembersModule],
+    controllers: [TeamsController],
+    providers: [TeamsRepository, TeamsService],
+    exports: [TeamsRepository, TeamsService, TeamMembersModule],
 })
 export class TeamsModule {
 }

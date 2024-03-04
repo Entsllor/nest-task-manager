@@ -15,7 +15,7 @@ export class Factory<T extends ObjectLiteral> {
         const fakeData = initialData as any;
         for (const key of keysOf(this.rule)) {
             if (fakeData.hasOwnProperty(key)) {
-                continue
+                continue;
             }
             let value = this.rule[key];
             if (value instanceof Factory) {

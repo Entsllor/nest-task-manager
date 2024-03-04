@@ -12,7 +12,7 @@ const UpdateTeamSchema = CreateTeamSchema.partial();
 export class UpdateTeamDto extends createZodDto(UpdateTeamSchema) {
 }
 
-const TeamSchema = CreateTeamSchema.extend({id: z.number(), createdAt: z.date(), authorId: Maybe(z.string().uuid())});
+export const TeamSchema = CreateTeamSchema.extend({id: z.number(), createdAt: z.coerce.date(), authorId: Maybe(z.string().uuid())});
 
 export class TeamDto extends createZodDto(TeamSchema) {
 }

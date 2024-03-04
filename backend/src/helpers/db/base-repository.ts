@@ -10,6 +10,7 @@ import {
 import {ClsService} from "nestjs-cls";
 import {QUERY_MANAGER_KEY} from "../../common/db/db.transactions.interceptor";
 import {PrimaryKeysOf} from "../types/entity-types";
+import {isEmpty} from "radash";
 
 
 export abstract class BaseRepository<Entity extends ObjectLiteral> {
@@ -62,6 +63,9 @@ export abstract class BaseRepository<Entity extends ObjectLiteral> {
         if (!entity) {
             return undefined;
         }
+        if (isEmpty(values)) {
+            return entity
+        }
         let ids = this.repo.getId(entity);
         if (typeof ids !== "object") {
             ids = {[this.idFieldName]: ids};
@@ -71,6 +75,9 @@ export abstract class BaseRepository<Entity extends ObjectLiteral> {
     }
 
     async updateMany(filters: FindOptionsWhere<Entity>, values: DeepPartial<Entity>) {
+        if (isEmpty(values)) {
+            return 0
+        }
         return await this.repo.update(filters, values).then(value => value.affected);
     }
 

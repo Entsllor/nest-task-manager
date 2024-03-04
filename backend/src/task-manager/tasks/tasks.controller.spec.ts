@@ -60,7 +60,7 @@ describe("TasksController", () => {
         });
 
         it("should raise if not found", async () => {
-            await expectError(controller.getOne(uuid4(), user.id), new TaskNotFound);
+            await expectError(controller.getOne(uuid4(), user.id), TaskNotFound);
         });
     });
 
@@ -88,7 +88,7 @@ describe("TasksController", () => {
 
         it("should raise error if not found", async () => {
             jest.spyOn(service, "update").mockImplementation(async () => undefined);
-            await expectError(controller.update(uuid4(), {title: faker.word.words()}, user.id), new TaskNotFound);
+            await expectError(controller.update(uuid4(), {title: faker.word.words()}, user.id), TaskNotFound);
         });
     });
 
@@ -97,13 +97,13 @@ describe("TasksController", () => {
             const task = await createTask();
             jest.spyOn(service, "delete").mockImplementation(async () => true);
             const result = await controller.delete(task.id, user.id);
-            expect(result).toEqual({ok: true});
+            expect(result).toBeUndefined();
         });
 
-        it("should return false if not exists", async () => {
+        it("should raise error if not exists", async () => {
             jest.spyOn(service, "delete").mockImplementation(async () => false);
             const action = controller.delete(uuid4(), user.id);
-            await expectError(action, new TaskNotFound);
+            await expectError(action, TaskNotFound);
         });
     });
 });
