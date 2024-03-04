@@ -14,31 +14,31 @@ export class TeamsController {
 
     @Post()
     @ParseResponse({type: TeamDto})
-    create(@Body() createTeamDto: CreateTeamDto, @UserId() userId: UUID) {
+    async create(@Body() createTeamDto: CreateTeamDto, @UserId() userId: UUID) {
         return this.teamsService.create(createTeamDto, userId);
     }
 
     @Get()
     @ParseResponse({type: TeamDto, isArray: true})
-    findAll() {
-        return this.teamsService.findAll();
+    async findAll(@UserId() userId: UUID) {
+        return this.teamsService.findAll({}, userId);
     }
 
     @Get(":id")
     @ParseResponse({type: TeamDto})
-    findOne(@Param("id", ParseIntPipe) id: number) {
-        return this.teamsService.findOne({id: +id});
+    async findOne(@Param("id", ParseIntPipe) id: number, @UserId() userId: UUID) {
+        return this.teamsService.findOne(+id, userId);
     }
 
     @Put(":id")
-    @HttpCode(204)
-    update(@Param("id", ParseIntPipe) id: number, @Body() updateTeamDto: UpdateTeamDto) {
-        return this.teamsService.update(+id, updateTeamDto);
+    @ParseResponse({type: TeamDto})
+    async update(@Param("id", ParseIntPipe) id: number, @Body() updateTeamDto: UpdateTeamDto, @UserId() userId: UUID) {
+        return this.teamsService.update(+id, updateTeamDto, userId);
     }
 
     @Delete(":id")
     @HttpCode(204)
-    remove(@Param("id", ParseIntPipe) id: number) {
-        return this.teamsService.remove(+id);
+    async remove(@Param("id", ParseIntPipe) id: number, @UserId() userId: UUID) {
+        await this.teamsService.remove(+id, userId);
     }
 }

@@ -9,6 +9,6 @@ export function hasResponseError<T extends {toJSON?: () => any, name?: string}>(
             error = new (error)() as T;
         }
         const message = error?.toJSON?.().error ?? error.name;
-        expect(message).toBe(res.body.error);
+        expect(res.body.error).toBe(message);
     };
 }

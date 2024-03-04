@@ -15,7 +15,7 @@ export class BoardsService {
 
     async create(createBoardDto: CreateBoardDto, authorId: UUID) {
         if (createBoardDto.teamId) {
-            await this.teamsService.hasAccess(createBoardDto.teamId, authorId);
+            await this.teamsService.hasAccess({id: createBoardDto.teamId}, authorId);
         }
         return this.repo.create({...createBoardDto, authorId});
     }
@@ -48,7 +48,7 @@ export class BoardsService {
             return true;
         }
         if (board.teamId) {
-            return await this.teamsService.hasAccess(board.teamId, userId);
+            return await this.teamsService.hasAccess({id: board.teamId}, userId);
         }
         return false;
     }
